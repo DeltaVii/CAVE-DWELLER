@@ -15,13 +15,13 @@ import time
 import sys
 
 #How to Play prompt
-print("""This is Kelly Norris' adventure game.
+'''print("""This is Kelly Norris' adventure game.
 When prompted, the directions are as follows:
 North(N, n, North, north)
 East (E, e, East, east)
 South (S, s, South, south)
 West (W, w, West, west)
-Have fun.""")
+Have fun.""")'''
 
 #ADDING ROOMS
 room_list = []
@@ -115,104 +115,106 @@ washroom_first = True
 
 #SETTING CURRENT ROOM
 current_room = 0
+next_room = 0
 #done variable
 done = False
 
 #game loop
-while done != True:
-    #check if player has key for lock 1
-    if current_room == 3 and lock1 == False and key1 == True:
-        print()
-        print("You unlock the door.")
-        lock1 = True
-    if current_room == 3 and lock1 == False:
-        print()
-        print("The door is locked.")
-        current_room = 2
-    #check if player has key for lock 2
-    if current_room == 10 and lock2 == False and key2 == True:
-        print()
-        print("You unlock the large door.")
-        lock2 = True
-    if current_room == 10 and lock2 == False:
-        print()
-        print("The door is locked.")
-        current_room = 7
-    print()
-    
-    #printing current room
-    #print(room_list[current_room][0])
-    for i in room_list[current_room][0]:
-        if i == ".":
-            sys.stdout.write(i)
-            sys.stdout.flush()
-            time.sleep(0.5)
-        elif i == ",":
-            sys.stdout.write(i)
-            sys.stdout.flush()
-            time.sleep(0.25)
-        else:
-            sys.stdout.write(i)
-            sys.stdout.flush()
-            time.sleep(0.02)
-    print()
-    
-    #Event prints
-    #First CaveHall visit
-    if current_room == 2 and caveHall_first == True:
-        house_First = False
-        print("A sign on the door reads: 'Check the Sink'.")
-        caveHall_first = False
-    #House visit after first CaveHall visit
-    if current_room == 0 and house_First == False:
-        print("You look under the sink and find a key.")
-        key1 = True
 
-    #First Library visit
-    if current_room == 9 and library_first == True:
-        library_first = False
-        washroom_first = False
-        print("""An open journal on the desk reads:
-        I don't think I emptied my pockets before putting my pants in the wash.
-        I hope that doesn't cause any problems.""")
-        
-    #Washroom visit after first Library visit
-    if current_room == 8 and washroom_first == False:
-        print("You look in the washing machine and find a pair of pants with keys in their pockets.")
-        key2 = True
-
-    #end check
-    if current_room == 10:
-        done = True
-
+#check if player has key for lock 1
+if current_room == 3 and lock1 == False and key1 == True:
+    #print()
+    #print("You unlock the door.")
+    lock1 = True
+if current_room == 3 and lock1 == False:
+    #print()
+    #print("The door is locked.")
+    current_room = 2
+#check if player has key for lock 2
+if current_room == 10 and lock2 == False and key2 == True:
+    #print()
+    #print("You unlock the large door.")
+    lock2 = True
+if current_room == 10 and lock2 == False:
+    #print()
+    #print("The door is locked.")
+    current_room = 7
+#print()
     
-    #user input
-    if done == False:
-        go = input("Which direction will you go? ")
-    
-    #direction checks
-    if go == "n" or go == "north" or go == "N" or go == "North":
-        next_room = room_list[current_room][1]
-    elif go == "e" or go == "east" or go == "E" or go == "East":
-        next_room = room_list[current_room][2]
-    elif go == "s" or go== "south" or go== "S" or go == "South":
-        next_room = room_list[current_room][3]
-    elif go == "w" or go == "west" or go== "W" or go == "West":
-        next_room = room_list[current_room][4]
-
-    
-        
-    #print(next_room)
-    if next_room != None:
-        current_room = next_room
+#printing current room
+#print(room_list[current_room][0])
+'''for i in room_list[current_room][0]:
+    if i == ".":
+        sys.stdout.write(i)
+        sys.stdout.flush()
+        time.sleep(0.5)
+    elif i == ",":
+        sys.stdout.write(i)
+        sys.stdout.flush()
+        time.sleep(0.25)
     else:
-        print()
-        if done == False:
-            print("You cannot go that way.")
-        print()
+        sys.stdout.write(i)
+        sys.stdout.flush()
+        time.sleep(0.02)
+print()'''
     
+#Event prints
+#First CaveHall visit
+if current_room == 2 and caveHall_first == True:
+    house_First = False
+    #print("A sign on the door reads: 'Check the Sink'.")
+    caveHall_first = False
+#House visit after first CaveHall visit
+if current_room == 0 and house_First == False:
+    #print("You look under the sink and find a key.")
+    key1 = True
+
+#First Library visit
+if current_room == 9 and library_first == True:
+    library_first = False
+    washroom_first = False
+    '''print("""An open journal on the desk reads:
+    I don't think I emptied my pockets before putting my pants in the wash.
+    I hope that doesn't cause any problems.""")'''
+    
+#Washroom visit after first Library visit
+if current_room == 8 and washroom_first == False:
+    #print("You look in the washing machine and find a pair of pants with keys in their pockets.")
+    key2 = True
+
+#end check
+if current_room == 10:
+    done = True
+
+
+#user input
+if done == False:
+    #go = input("Which direction will you go? ")
+    go = 0
+#direction checks
+if go == "n" or go == "north" or go == "N" or go == "North":
+    next_room = room_list[current_room][1]
+elif go == "e" or go == "east" or go == "E" or go == "East":
+    next_room = room_list[current_room][2]
+elif go == "s" or go== "south" or go== "S" or go == "South":
+    next_room = room_list[current_room][3]
+elif go == "w" or go == "west" or go== "W" or go == "West":
+    next_room = room_list[current_room][4]
+
+
+    
+#print(next_room)
+if next_room != None:
+    current_room = next_room
+else:
+    #print()
+    if done == False:
+        #print("You cannot go that way.")
+        stopthat = 0
+    #print()
+
  
-print("Thank you for playing.")
+#print("Thank you for playing.")
    
     
     

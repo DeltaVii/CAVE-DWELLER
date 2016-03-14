@@ -1,15 +1,18 @@
 ####################
 ## Kelly Norris
 ##
-## March 2016
+## March 2016 Semester 2
 ##
-## CAVE DWELLER
+## CAVE DWELLER Main File
 ####################
 
 #Import files as needed
 import pygame
 #import basegame
+import basegame
+#import rooms
 from Rooms import *
+from Menu import *
 #Declare colors for draws
 BLACK = (  0,   0,   0)
 WHITE = (255, 255, 255)
@@ -25,6 +28,7 @@ screen = pygame.display.set_mode(size)
 pygame.display.set_caption("Window Title goes here")
 
 rooms = Rooms()
+menu = Menu()
 
 #making main loop variables:
 #done for loop
@@ -53,8 +57,10 @@ while not done:
     screen.fill(BLACK)
 
     #Draws go here
-    rooms.drawHouse(screen, WHITE)
     
+    menu.drawMenuBox(screen, WHITE)
+    if basegame.current_room == 0:
+        rooms.drawHouse(screen, WHITE)
 
     #Make sure draws go on screen
     pygame.display.flip()

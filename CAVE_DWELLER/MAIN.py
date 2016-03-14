@@ -21,6 +21,7 @@ RED   = (255,   0,   0)
 
 #initialize pygame
 pygame.init()
+font = pygame.font.SysFont('adobehebrew', 12)
 
 #Create window
 size = (700, 500)
@@ -61,6 +62,7 @@ while not done:
     menu.drawMenuBox(screen, WHITE)
     if basegame.current_room == 0:
         rooms.drawHouse(screen, WHITE)
+        #menu.drawRoom0Text(
 
     #Make sure draws go on screen
     pygame.display.flip()

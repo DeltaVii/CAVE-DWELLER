@@ -24,14 +24,14 @@ class Menu():
         cursor = pygame.draw.polygon(screen, color, [[x1,y1],[x2,y2],[x3,y3]], 0)
         return cursor
 
-    def drawMenuCursorSimple(self, screen, color):
-        if main.cursor_position == 'menu':
+    def drawMenuCursorSimple(self, cursor_position, screen, color):
+        if cursor_position == 'menu':
             #draw = drawMenuCursor(screen, WHITE, 130,130,140,375,395,385)
             return pygame.draw.polygon(screen, color, [[130,375],[130,395],[140,385]], 0)
-        if main.cursor_position == 'move':
+        if cursor_position == 'move':
             #menu.drawMenuCursor(screen, WHITE, 130,130,140,425,445,435)
             return pygame.draw.polygon(screen, color, [[130,425],[130,445],[140,435]], 0)
-        if main.cursor_position == 'interact':
+        if cursor_position == 'interact':
             #menu.drawMenuCursor(screen, WHITE, 400,400,410,375,395,385)
             return pygame.draw.polygon(screen, color, [[400,375],[400,395],[410,385]], 0)
             

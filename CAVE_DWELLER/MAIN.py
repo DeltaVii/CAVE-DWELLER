@@ -81,7 +81,7 @@ while not done:
         #menu.drawMenuCursor(screen, WHITE, 130,130,140,425,445,435)
     #if cursor_position == 'interact':
         #menu.drawMenuCursor(screen, WHITE, 400,400,410,375,395,385)
-    menu.drawMenuCursorSimple(screen, WHITE)
+    menu.drawMenuCursorSimple(cursor_position, screen, WHITE)
     if basegame.current_room == 0:
         rooms.drawHouse(screen, WHITE)
         menu.drawRoom0Text(screen, font, WHITE)

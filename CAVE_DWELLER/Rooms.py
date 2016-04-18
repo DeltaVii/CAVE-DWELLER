@@ -9,6 +9,7 @@ class Rooms():
     current_room = 0
     next_room = None
     go = None
+    ##Adding rooms to the room list
     #Room 0: House
     def drawHouse(self, screen, color):
         return pygame.draw.rect(screen, color, [100,100, 250, 100], 2)
@@ -77,6 +78,9 @@ class Rooms():
     Well, either way, it seems this strange adventure is over.
     For now.""", None, None, None, 7]
     room_list.append(room10)
+
+
+    #Checking if the next room exists
     def checkDirection(self):
         if self.go == "n":
             self.next_room = self.room_list[self.current_room][1]
@@ -93,7 +97,7 @@ class Rooms():
             print("Next room has been set to the west.")
             self.go = None
 
-        
+    #switching current rooms  
     def setDirection(self):
         if self.next_room != None:
             self.current_room = self.next_room

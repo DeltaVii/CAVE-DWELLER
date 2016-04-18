@@ -13,6 +13,7 @@ import basegame
 #import other files
 from Rooms import *
 from Menu import *
+from Player import *
 #Declare colors for draws
 BLACK = (  0,   0,   0)
 WHITE = (255, 255, 255)
@@ -32,7 +33,7 @@ pygame.display.set_caption("Window Title goes here")
 #making instances of logic files
 rooms = Rooms()
 menu = Menu()
-
+player = Player()
 #making main loop variables:
 #done for loop
 done = False
@@ -43,7 +44,31 @@ clock = pygame.time.Clock()
 font = pygame.font.Font('AdobeArabic-Regular.otf', 50)
 cursor_position = 'topLeft'
 current_menu = "main"
-
+text = True
+#Room images
+roomimage_list = []
+roomimage0 = pygame.image.load("img/room0.png").convert()
+roomimage_list.append(roomimage0)
+roomimage1 = pygame.image.load("img/room1.png").convert()
+roomimage_list.append(roomimage1)
+roomimage2 = pygame.image.load("img/room2.png").convert()
+roomimage_list.append(roomimage2)
+roomimage3 = pygame.image.load("img/room3.png").convert()
+roomimage_list.append(roomimage3)
+roomimage4 = pygame.image.load("img/room4.png").convert()
+roomimage_list.append(roomimage4)
+roomimage5 = pygame.image.load("img/room5.png").convert()
+roomimage_list.append(roomimage5)
+roomimage6 = pygame.image.load("img/room6.png").convert()
+roomimage_list.append(roomimage6)
+roomimage7 = pygame.image.load("img/room7.png").convert()
+roomimage_list.append(roomimage7)
+roomimage8 = pygame.image.load("img/room8.png").convert()
+roomimage_list.append(roomimage8)
+roomimage9 = pygame.image.load("img/room9.png").convert()
+roomimage_list.append(roomimage9)
+roomimage10 = pygame.image.load("img/room10.png").convert()
+roomimage_list.append(roomimage10)
 #-----Main Loop-----#
 while not done:
     #Event loop, looking for inputs
@@ -60,6 +85,9 @@ while not done:
                         cursor_position = 'botLeft'
                     if event.key == pygame.K_RIGHT:
                         cursor_position = 'topRight'
+                    if event.key == pygame.K_RETURN:
+                        current_menu = 'player'
+                        cursor_position = 'topLeft'
                         
                 if cursor_position == 'botLeft':
                     if event.key == pygame.K_UP:
@@ -70,6 +98,8 @@ while not done:
                 if cursor_position == 'topRight':
                     if event.key == pygame.K_LEFT:
                         cursor_position = 'topLeft'
+                    if event.key == pygame.K_RETURN:
+                        interact = True
             #move menu logic
             if current_menu == 'move':
                 if event.key == pygame.K_BACKSPACE:
@@ -108,33 +138,63 @@ while not done:
                     if event.key == pygame.K_RETURN:
                         rooms.go = 'w'
                         print("go is now west")
-        
+            #Player menu
+            if current_menu == 'player':
+                if event.key == pygame.K_BACKSPACE:
+                    current_menu = 'main'
+                if cursor_position == 'topLeft':
+                    if event.key == pygame.K_RIGHT:
+                        cursor_position = 'topRight'
+                    if event.key == pygame.K_RETURN:
+                        current_menu = 'items'
+                if cursor_position == 'topRight':
+                    if event.key == pygame.K_LEFT:
+                        cursor_position = 'topLeft'
+                    if event.key == pygame.K_RETURN:
+                        current_menu = 'stats'
+
+            if current_menu == 'items':
+                if event.key == pygame.K_BACKSPACE:
+                    current_menu = 'player'
+            
+            if current_menu == 'stats':
+                if event.key == pygame.BACKSPACE:
+                    current_menu = 'player'
+                
+            if text == True:
+                if event.key == pygame.K_z:
+                    text = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
             print("User pressed a mouse button")
     #Game logic goes here
     rooms.checkDirection()
     rooms.setDirection()
-    '''
-    if rooms.go == None:
-        print("go is None")
-    if rooms.next_room == None:
-        print("next_room is None")
-    '''
+    
     #clear screen
     screen.fill(BLACK)
 
     #Draws go here
-    
-    
+    screen.blit(roomimage_list[rooms.current_room], [0, 0])
+
+    if text == True:
+        menu.drawTextBox(screen, WHITE)
+        menu.drawRoomText(screen, font, WHITE, rooms.current_room)
+        
+
+    pygame.draw.rect(screen, BLACK, [50, 350, 600, 125], 0)
     menu.drawMenuBox(screen, WHITE)
     if current_menu == 'main':
         menu.drawMenuText(screen, font, WHITE)
     elif current_menu == 'move':
         menu.drawMoveMenuText(screen, font, WHITE)
-    menu.drawMenuCursorSimple(cursor_position, screen, WHITE)
-    
+    elif current_menu == 'player':
+        menu.drawPlayerMenuText(screen, font, WHITE)
+    elif current_menu == 'items':
+        menu.drawItemsPlayerMenuText(screen, font, WHITE)
     if rooms.current_room == 0:
         rooms.drawHouse(screen, WHITE)
+    menu.drawMenuCursorSimple(cursor_position, screen, WHITE)
+    
     
     #Make sure draws go on screen
     pygame.display.flip()

@@ -42,6 +42,7 @@ clock = pygame.time.Clock()
 
 #Other variables for looping:
 font = pygame.font.Font('AdobeArabic-Regular.otf', 50)
+roomFont = pygame.font.Font('AdobeArabic-Regular.otf', 30)
 cursor_position = 'topLeft'
 current_menu = "main"
 text = True
@@ -87,6 +88,7 @@ while not done:
                         cursor_position = 'topRight'
                     if event.key == pygame.K_RETURN:
                         current_menu = 'player'
+                        print("The current menu is player")
                         cursor_position = 'topLeft'
                         
                 if cursor_position == 'botLeft':
@@ -147,6 +149,7 @@ while not done:
                         cursor_position = 'topRight'
                     if event.key == pygame.K_RETURN:
                         current_menu = 'items'
+                        print("The current menu is items")
                 if cursor_position == 'topRight':
                     if event.key == pygame.K_LEFT:
                         cursor_position = 'topLeft'
@@ -158,12 +161,13 @@ while not done:
                     current_menu = 'player'
             
             if current_menu == 'stats':
-                if event.key == pygame.BACKSPACE:
+                if event.key == pygame.K_BACKSPACE:
                     current_menu = 'player'
                 
-            if text == True:
-                if event.key == pygame.K_z:
-                    text = False
+           
+            if event.key == pygame.K_z:
+                rooms.text = False
+                print("text is false")
         elif event.type == pygame.MOUSEBUTTONDOWN:
             print("User pressed a mouse button")
     #Game logic goes here
@@ -176,9 +180,11 @@ while not done:
     #Draws go here
     screen.blit(roomimage_list[rooms.current_room], [0, 0])
 
-    if text == True:
+    if rooms.text == True:
         menu.drawTextBox(screen, WHITE)
-        menu.drawRoomText(screen, font, WHITE, rooms.current_room)
+        menu.drawRoomText(screen, roomFont, WHITE, rooms.current_room)
+        print("volvo gib text")
+        
         
 
     pygame.draw.rect(screen, BLACK, [50, 350, 600, 125], 0)
@@ -191,8 +197,7 @@ while not done:
         menu.drawPlayerMenuText(screen, font, WHITE)
     elif current_menu == 'items':
         menu.drawItemsPlayerMenuText(screen, font, WHITE)
-    if rooms.current_room == 0:
-        rooms.drawHouse(screen, WHITE)
+    
     menu.drawMenuCursorSimple(cursor_position, screen, WHITE)
     
     

@@ -17,8 +17,8 @@ class Menu():
 
     def drawTextBox(self, screen, color):
         BLACK = (0, 0, 0)
-        return (pygame.draw.rect(screen, BLACK, [50, 50, 600, 125], 0),
-                pygame.draw.rect(screen, color, [50, 50, 600, 125], 3))
+        return (pygame.draw.rect(screen, BLACK, [50, 30, 600, 200], 0),
+                pygame.draw.rect(screen, color, [50, 30, 600, 200], 3))
 
     #Text draws for different menus
     def drawMenuText(self, screen, font, color):
@@ -77,9 +77,28 @@ class Menu():
         
 
     def drawRoomText(self, screen, font, color, current_room):
-        text = font.render(rooms.room_list[rooms.current_room][0], True, color)
-        renderText = screen.blit(text, [60, 60])
-        return renderText
+        text_line0 = font.render(rooms.room_text[current_room][0], True, color)
+        renderText_line0 = screen.blit(text_line0, [60, 35])
+        
+        text_line1 = font.render(rooms.room_text[current_room][1], True, color)
+        renderText_line1 = screen.blit(text_line1, [60, 60])
+        
+        text_line2 = font.render(rooms.room_text[current_room][2], True, color)
+        renderText_line2 = screen.blit(text_line2, [60, 85])
+        
+        text_line3 = font.render(rooms.room_text[current_room][3], True, color)
+        renderText_line3 = screen.blit(text_line3, [60, 110])
+
+        text_line4 = font.render(rooms.room_text[current_room][4], True, color)
+        renderText_line4 = screen.blit(text_line4, [60, 135])
+
+        text_line5 = font.render(rooms.room_text[current_room][5], True, color)
+        renderText_line5 = screen.blit(text_line5, [60, 160])
+
+        text_line6 = font.render(rooms.room_text[current_room][6], True, color)
+        renderText_line6 = screen.blit(text_line6, [60, 185])
+        
+        
 
 
 

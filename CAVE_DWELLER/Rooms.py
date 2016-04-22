@@ -5,6 +5,7 @@ pygame.init()
 class Rooms():
     def __init__(self):
         pass
+    text = True
     room_list = []
     current_room = 0
     next_room = None
@@ -105,6 +106,88 @@ class Rooms():
             self.go = None
             self.next_room = None
             print(self.current_room)
+            self.text = True
+            print("text is", self.text)
         else:
             self.next_room = None
             #print("Next room was none")
+
+    room_text = []
+    room0text = ["You stand in a small, friendly looking house.",
+    "There's a counter with cupboards and a sink, and a small table.",
+    "The curtains are all closed.",
+    "To your east is a door.","","",""]
+    room_text.append(room0text)
+    
+    room1text = ["You enter a large cave with torches on the walls.",
+    "To the east, there's a hole leading somewhere.","","","","",""]
+    room_text.append(room1text)
+    
+    room2text = ["You enter a small hallway of stone.",
+    "Some stalactites hang from the ceiling.",
+    "Torches on the wall shine on the wet stalactites.",
+    "There is a fancy door to the east.","","",""]
+    room_text.append(room2text)
+
+    room3text = ["You enter a large mansion room.",
+    "There's a fireplace with fancy chairs around it.",
+    "Some fancy paintings decorate the walls, while a fancy",
+    "chandelier hangs from the ceiling.",
+    "You feel quite fancy standing in the room.","",""]
+    room_text.append(room3text)
+
+    room4text = ["You enter a bedroom with a twin sized bed.",
+    "A nightstand sits next to the bed with a lamp on it.",
+    "There doesn't seem to be anything important here.","","","",""]
+    room_text.append(room4text)
+
+    room5text = ["You enter what seems to be a master bedroom.",
+    "A large, canopied bed dominates the room.",
+    "A dresser and makeup table sit on the north side.",
+    "Even though impressive, you're pretty sure there's nothing here.", "","",""]
+    room_text.append(room5text)
+
+    room6text = ["You enter a hallway in the same style as the Mansion room.",
+    "Small oil lamps dimly light the hallway.",
+    "There are doors to the north, east, south and west.", "", "","",""]
+    room_text.append(room6text)
+
+    room7text = ["You enter a hallway quite like the other one it connects to.",
+    "There are doors to the north, east, south and west.",
+    "The eastern door is quite larger than the other doors, and",
+    "more ornate.",
+    "You wonder if it holds a significance.","",""]
+    room_text.append(room7text)
+
+    room8text = ["You enter a washing room. For clothes, that is. Not a bathroom.",
+    "How a washing and drying machine got into an unpowered",
+    "cave mansion is beyond you.",
+    "Perhaps they are oil powered.",
+    "But what if the oil leaks? What would you wash your clothes",
+    "with then?",
+    "You digress."]
+    room_text.append(room8text)
+
+    room9text = ["You enter a small library.",
+    "The walls are all lined with bookshelves, up to the doorway.",
+    "A small desk with a comfy looking chair sit in the center.",
+    "A lamp on the desk fills the room with a warm glow.", ""]
+    room_text.append(room9text)
+
+    room10text = ["You go through the ornaate door and see the moon and stars.",
+    "It seems the cave/home/mansion ends here.",
+    "You wonder to yourself: Why was I in that home?",
+    "You must have had severe amnesia to not remember how",
+    "you got there. Or maybe dementia.",
+    "Well, either way, it seems this strange adventure is over.",
+    "For now."]
+    room_text.append(room10text)
+
+
+
+
+
+
+
+
+    

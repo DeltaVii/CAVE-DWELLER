@@ -59,7 +59,8 @@ class Menu():
         renderitem2 = screen.blit(item2, [400, 360])
         renderitem3 = screen.blit(item3, [130, 410])
         renderitem4 = screen.blit(item4, [400, 410])
-        
+
+    
 
     #Cursor placement    
     def drawMenuCursorSimple(self, cursor_position, screen, color):
@@ -99,7 +100,11 @@ class Menu():
         renderText_line6 = screen.blit(text_line6, [60, 185])
         
         
-
+    def drawEventBox(self, screen):
+        WHITE = (255, 255, 255)
+        BLACK = (0, 0, 0)
+        pygame.draw.rect(screen, WHITE, [[175, 300],[200,50]], 3)
+        
 
 
         

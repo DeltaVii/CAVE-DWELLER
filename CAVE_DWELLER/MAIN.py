@@ -46,6 +46,16 @@ roomFont = pygame.font.Font('AdobeArabic-Regular.otf', 30)
 cursor_position = 'topLeft'
 current_menu = "main"
 text = True
+#Locks
+lock1 = True
+lock2 = True
+key1 = False
+key2 = False
+#First Visit checks
+room0_first = True
+room2_first = True
+room8_first = True
+room9_first = True
 #Room images
 roomimage_list = []
 roomimage0 = pygame.image.load("img/room0.png").convert()
@@ -173,6 +183,10 @@ while not done:
     #Game logic goes here
     rooms.checkDirection()
     rooms.setDirection()
+    ##Checking for locked doors and their keys##
+    if rooms.current_room == 3 and lock1 == True and key1 == True:
+        lock1 = False
+        menu.drawEventBox(screen)
     
     #clear screen
     screen.fill(BLACK)
@@ -183,7 +197,7 @@ while not done:
     if rooms.text == True:
         menu.drawTextBox(screen, WHITE)
         menu.drawRoomText(screen, roomFont, WHITE, rooms.current_room)
-        print("volvo gib text")
+        
         
         
 

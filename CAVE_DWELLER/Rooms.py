@@ -6,10 +6,14 @@ class Rooms():
     def __init__(self):
         pass
     text = True
+    eventText = False
     room_list = []
     current_room = 0
     next_room = None
     go = None
+    event = False
+    eventType = None
+    interact = False
     ##Adding rooms to the room list
     #Room 0: House
     def drawHouse(self, screen, color):
@@ -151,7 +155,17 @@ class Rooms():
     room_text.append(room10text)
 
 
-
+    eventLock = ["The door is locked.",'','']
+    eventUnlock = ["You unlock the door.",'','']
+    eventCaveHall = ["A sign on the door reads: 'Check the Sink'.",'','']
+    eventHouse = ["You look under the sink and find a key.",'','']
+    
+    eventLibrary = ["An open journal on the desk reads:",
+                    "I don't think I emptied my pockets before the wash.",
+                    "I hope that doesn't cause any problems"]
+    
+    eventWashroom = ["You look in the washing machine and find",
+                     "a pair of pants with keys in their pockets.", '']
 
 
 

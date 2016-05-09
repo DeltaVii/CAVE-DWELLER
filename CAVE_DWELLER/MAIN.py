@@ -45,7 +45,7 @@ font = pygame.font.Font('AdobeArabic-Regular.otf', 50)
 roomFont = pygame.font.Font('AdobeArabic-Regular.otf', 30)
 cursor_position = 'topLeft'
 current_menu = "main"
-text = True
+
 #Locks
 lock1 = True
 lock2 = True
@@ -111,7 +111,7 @@ while not done:
                     if event.key == pygame.K_LEFT:
                         cursor_position = 'topLeft'
                     if event.key == pygame.K_RETURN:
-                        interact = True
+                        rooms.interact = True
             #move menu logic
             if current_menu == 'move':
                 if event.key == pygame.K_BACKSPACE:
@@ -180,13 +180,55 @@ while not done:
                 print("text is false")
         elif event.type == pygame.MOUSEBUTTONDOWN:
             print("User pressed a mouse button")
+
+            
     #Game logic goes here
     rooms.checkDirection()
     rooms.setDirection()
     ##Checking for locked doors and their keys##
+    #Lock 1
     if rooms.current_room == 3 and lock1 == True and key1 == True:
         lock1 = False
+        rooms.event = True
+        rooms.eventType = 'UNLOCK'
+    if rooms.current_room == 3 and lock1 == True and key1 == False:
+        rooms.current_room = 2
+        rooms.event = True
+        rooms.eventType = 'LOCK'
+
+    #Lock 2
+    if rooms.current_room == 10 and lock2 == True and key2 == True:
+        lock2 = False
         menu.drawEventBox(screen)
+        rooms.event = True
+        rooms.eventType = 'LOCK'
+    if rooms.current_room == 10 and lock2 == True and key2 == False:
+        rooms.current_room = 7
+
+    #Checking for first visit events#
+    if rooms.current_room == 2 and room2_first == True:
+        room0_first = False
+        rooms.event = True
+        rooms.eventType = '2_FIRST'
+        room2_first = False
+
+    if rooms.interact == True:
+        if rooms.current_room == 0 and room0_first == False:
+            rooms.event = True
+            rooms.eventType = '0_FIRST'
+            key1 = True
+            rooms.interact = False
+        if rooms.current_room == 8 and room8_first == False:
+            rooms.event = True
+            rooms.eventType = '8_FIRST'
+            key2 = True
+
+    if rooms.current_room == 9 and room9_first == True:
+        room9_first = False
+        room8_first = False
+        rooms.event = True
+        rooms.eventType = '9_FIRST'
+    
     
     #clear screen
     screen.fill(BLACK)
@@ -197,8 +239,22 @@ while not done:
     if rooms.text == True:
         menu.drawTextBox(screen, WHITE)
         menu.drawRoomText(screen, roomFont, WHITE, rooms.current_room)
-        
-        
+    
+    if rooms.event == True:
+        menu.drawEventBox(screen)
+        rooms.eventText = True
+        if rooms.eventType == 'LOCK':
+            menu.drawEventText(screen, roomFont, WHITE, rooms.eventLock)
+        if rooms.eventType == 'UNLOCK':
+            menu.drawEventText(screen, roomFont, WHITE, rooms.eventUnlock)
+        if rooms.eventType == '2_FIRST':
+            menu.drawEventText(screen, roomFont, WHITE, rooms.eventCaveHall)
+        if rooms.eventType == '0_FIRST':
+            menu.drawEventText(screen, roomFont, WHITE, rooms.eventHouse)
+        if rooms.eventType == '9_FIRST':
+            menu.drawEventText(screen, roomFont, WHITE, rooms.eventLibrary)
+        if rooms.eventType == '8_FIRST':
+            menu.drawEventText(screen, roomFont, WHITE, rooms.eventWashroom)
         
 
     pygame.draw.rect(screen, BLACK, [50, 350, 600, 125], 0)
@@ -220,6 +276,9 @@ while not done:
 
     #set frames per second
     clock.tick(60)
+
+    #mop up
+    rooms.interact = False
 #when loop is done, close window
 pygame.quit()
 

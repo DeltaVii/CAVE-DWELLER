@@ -103,7 +103,18 @@ class Menu():
     def drawEventBox(self, screen):
         WHITE = (255, 255, 255)
         BLACK = (0, 0, 0)
-        pygame.draw.rect(screen, WHITE, [[175, 300],[200,50]], 3)
+        pygame.draw.rect(screen, BLACK, [50, 30, 600, 200], 0)
+        pygame.draw.rect(screen, WHITE, [50, 30, 600, 200], 3)
+
+    def drawEventText(self, screen, font, color, eventType):
+        text_line0 = font.render(eventType[0], True, color)
+        renderText_line0 = screen.blit(text_line0, [60, 35])
+        
+        text_line1 = font.render(eventType[1], True, color)
+        renderText_line1 = screen.blit(text_line1, [60, 60])
+        
+        text_line2 = font.render(eventType[2], True, color)
+        renderText_line2 = screen.blit(text_line2, [60, 85])
         
 
 

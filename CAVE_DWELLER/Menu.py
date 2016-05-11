@@ -46,8 +46,10 @@ class Menu():
     def drawPlayerMenuText(self, screen, font, color):
         items = font.render('Items', True, color)
         stats = font.render('Stats', True, color)
+        keys = font.render('Keys', True, color)
         renderItems = screen.blit(items, [130, 360])
         renderStats = screen.blit(stats, [400, 360])
+        renderKeys = screen.blit(keys, [130, 410])
 
     def drawItemsPlayerMenuText(self, screen, font, color):
         item1 = font.render(player.items[0], True, color)
@@ -59,6 +61,14 @@ class Menu():
         renderitem2 = screen.blit(item2, [400, 360])
         renderitem3 = screen.blit(item3, [130, 410])
         renderitem4 = screen.blit(item4, [400, 410])
+
+    def drawKeysPlayerMenuText(self, screen, font, color, key1, key2):
+        if key1 == True:
+            key1 = font.render('Cave Key', True, color)
+            renderKey1 = screen.blit(key1, [130, 360])
+        if key2 == True:
+            key2 = font.render('Large Door Key', True, color)
+            renderKey2 = screen.blit(key2, [130, 410])
 
     
 

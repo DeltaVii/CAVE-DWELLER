@@ -14,6 +14,7 @@ import basegame
 from Rooms import *
 from Menu import *
 from Player import *
+from Battle import *
 #Declare colors for draws
 BLACK = (  0,   0,   0)
 WHITE = (255, 255, 255)
@@ -34,6 +35,7 @@ pygame.display.set_caption("Window Title goes here")
 rooms = Rooms()
 menu = Menu()
 player = Player()
+battle = Battle()
 #making main loop variables:
 #done for loop
 done = False
@@ -45,6 +47,7 @@ font = pygame.font.Font('AdobeArabic-Regular.otf', 50)
 roomFont = pygame.font.Font('AdobeArabic-Regular.otf', 30)
 cursor_position = 'topLeft'
 current_menu = "main"
+
 
 #Locks
 lock1 = True
@@ -157,6 +160,8 @@ while not done:
                 if cursor_position == 'topLeft':
                     if event.key == pygame.K_RIGHT:
                         cursor_position = 'topRight'
+                    if event.key == pygame.K_DOWN:
+                        cursor_position = 'botLeft'
                     if event.key == pygame.K_RETURN:
                         current_menu = 'items'
                         print("The current menu is items")
@@ -165,6 +170,12 @@ while not done:
                         cursor_position = 'topLeft'
                     if event.key == pygame.K_RETURN:
                         current_menu = 'stats'
+                if cursor_position == 'botLeft':
+                    if event.key == pygame.K_UP:
+                        cursor_position = 'topLeft'
+                    if event.key == pygame.K_RETURN:
+                        current_menu = 'keys'
+                        cursor_position = 'topLeft'
 
             if current_menu == 'items':
                 if event.key == pygame.K_BACKSPACE:
@@ -173,18 +184,33 @@ while not done:
             if current_menu == 'stats':
                 if event.key == pygame.K_BACKSPACE:
                     current_menu = 'player'
+
+            if current_menu == 'keys':
+                if event.key == pygame.K_BACKSPACE:
+                    current_menu = 'player'
                 
            
             if event.key == pygame.K_z:
                 rooms.text = False
                 print("text is false")
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            print("User pressed a mouse button")
+            if event.key == pygame.K_x:
+                rooms.event = False
+
+            if battle.beginBattlePhase == True:
+                if event.key == pygame.K_RETURN:
+                    battle.battle = True
+                    battle.beginBattlePhase = False
+                    print("battle is true")
+                    cursor_position = 'topleft'
+        
 
             
     #Game logic goes here
+    
     rooms.checkDirection()
     rooms.setDirection()
+    if rooms.current_room == 1:
+        battle.beginBattlePhase = True
     ##Checking for locked doors and their keys##
     #Lock 1
     if rooms.current_room == 3 and lock1 == True and key1 == True:
@@ -234,13 +260,14 @@ while not done:
     screen.fill(BLACK)
 
     #Draws go here
+    
     screen.blit(roomimage_list[rooms.current_room], [0, 0])
 
-    if rooms.text == True:
+    if rooms.text == True and battle.battle == False and battle.beginBattlePhase == False:
         menu.drawTextBox(screen, WHITE)
         menu.drawRoomText(screen, roomFont, WHITE, rooms.current_room)
     
-    if rooms.event == True:
+    if rooms.event == True and battle.battle == False:
         menu.drawEventBox(screen)
         rooms.eventText = True
         if rooms.eventType == 'LOCK':
@@ -256,9 +283,10 @@ while not done:
         if rooms.eventType == '8_FIRST':
             menu.drawEventText(screen, roomFont, WHITE, rooms.eventWashroom)
         
-
-    pygame.draw.rect(screen, BLACK, [50, 350, 600, 125], 0)
-    menu.drawMenuBox(screen, WHITE)
+    if battle.battle == False and battle.beginBattlePhase == False:
+        pygame.draw.rect(screen, BLACK, [50, 350, 600, 125], 0)
+        menu.drawMenuBox(screen, WHITE)
+        
     if current_menu == 'main':
         menu.drawMenuText(screen, font, WHITE)
     elif current_menu == 'move':
@@ -267,10 +295,21 @@ while not done:
         menu.drawPlayerMenuText(screen, font, WHITE)
     elif current_menu == 'items':
         menu.drawItemsPlayerMenuText(screen, font, WHITE)
+    elif current_menu == 'keys':
+        menu.drawKeysPlayerMenuText(screen, font, WHITE, key1, key2)
+
     
+
+    
+    if battle.beginBattlePhase == True:
+        battle.beginBattle(screen, WHITE, font)
+        current_menu = 'shadow_realm'
+        cursor_position = 'shadow_realm'
+    if battle.battle == True:
+        battle.drawBattleBox(screen, WHITE)
+        battle.drawBattleMainText(screen, WHITE, font)
+        current_menu = 'battle'
     menu.drawMenuCursorSimple(cursor_position, screen, WHITE)
-    
-    
     #Make sure draws go on screen
     pygame.display.flip()
 

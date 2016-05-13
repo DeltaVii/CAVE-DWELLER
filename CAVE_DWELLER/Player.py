@@ -15,3 +15,18 @@ class Player():
     items.append('Healing Potion')
     items.append('')
     equip = items[0]
+
+class Enemy():
+    def __init__(self):
+        pass
+    name = ''
+    hp = 5
+    attacks = []
+    attack1 = []
+    attack2 = []
+
+    def statgen(self, hp, attack1, attack2):
+        self.hp = hp
+        self.attacks.append(attack1)
+        self.attacks.append(attack2)
+        

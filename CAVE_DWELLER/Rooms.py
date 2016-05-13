@@ -9,6 +9,7 @@ class Rooms():
     eventText = False
     room_list = []
     current_room = 0
+    current_roomGhost = 0
     next_room = None
     go = None
     event = False

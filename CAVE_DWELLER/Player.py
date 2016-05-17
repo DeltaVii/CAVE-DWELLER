@@ -7,6 +7,8 @@
 ####################
 
 class Player():
+    def __init__(self):
+        pass
     hp = 20
     xp = 0
     items = []
@@ -25,6 +27,7 @@ class Enemy():
     attack1 = []
     attack2 = []
 
+    #run with each encounter for new stats
     def statgen(self, hp, attack1, attack2):
         self.hp = hp
         self.attacks.append(attack1)

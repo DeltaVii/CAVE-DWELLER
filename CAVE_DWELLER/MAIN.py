@@ -8,6 +8,7 @@
 
 #Import files as needed
 import pygame
+import random
 #import basegame
 import basegame
 #import other files
@@ -57,6 +58,7 @@ key1 = False
 key2 = False
 #First Visit checks
 room0_first = True
+room1_first = True
 room2_first = True
 room8_first = True
 room9_first = True
@@ -116,6 +118,7 @@ while not done:
                         cursor_position = 'topLeft'
                     if event.key == pygame.K_RETURN:
                         rooms.interact = True
+                        
             #move menu logic
             if current_menu == 'move':
                 if event.key == pygame.K_BACKSPACE:
@@ -154,7 +157,8 @@ while not done:
                     if event.key == pygame.K_RETURN:
                         rooms.go = 'w'
                         print("go is now west")
-            #Player menu
+                        
+            #Player menu logic
             if current_menu == 'player':
                 if event.key == pygame.K_BACKSPACE:
                     current_menu = 'main'
@@ -190,13 +194,14 @@ while not done:
                 if event.key == pygame.K_BACKSPACE:
                     current_menu = 'player'
                 
-           
+           #Text logic
             if event.key == pygame.K_z:
                 rooms.text = False
                 print("text is false")
             if event.key == pygame.K_x:
                 rooms.event = False
 
+            #Battle menues logic
             if battle.beginBattlePhase == True:
                 if event.key == pygame.K_RETURN:
                     battle.battle = True
@@ -204,51 +209,87 @@ while not done:
                     print("battle is true")
                     cursor_position = 'topLeft'
                     current_menu = 'battle'
+                    battle.turn = 'shadow_realm'
+                    battle.battleEvent = 'spawn'
 
-            if current_menu == 'battle':
-                if cursor_position == 'topLeft':
-                    if event.key == pygame.K_RIGHT:
-                        cursor_position = 'topRight'
-                    if event.key == pygame.K_DOWN:
-                        cursor_position = 'botLeft'
-                    if event.key == pygame.K_RETURN:
-                        battle.attack = True
-                if cursor_position == 'botLeft':
-                    if event.key == pygame.K_UP:
-                        cursor_position = 'topLeft'
-                    if event.key == pygame.K_RETURN:
-                        current_menu = 'battle_items'
-                        cursor_position = 'topLeft'
-                if cursor_position == 'topRight':
-                    if event.key == pygame.K_LEFT:
-                        cursor_position = 'topLeft'
-                    if event.key == pygame.K_RETURN:
-                        battle.flee = True
+            if battle.battleEvent == 'spawn':
+                if event.key == pygame.K_z:
+                    battle.battleEvent = ''
+                    battle.turn = 'player'
+            if battle.battleEvent == 'enemyAttack':
+                if event.key == pygame.K_z:
+                    battle.battleEvent = ''
+                    battle.event_text1 = ''
+                    battle.turn = 'player'
 
-            if current_menu == 'battle_items':
-                if event.key == pygame.K_BACKSPACE:
-                    current_menu = 'battle'
-                if cursor_position == 'topLeft':
-                    if event.key == pygame.K_DOWN:
-                        cursor_position ='botLeft'
-                    if event.key == pygame.K_z and player.items[1] == 'Healing Potion':
-                        player.items[1] = ''
-                        player.hp += 20
-                if cursor_position == 'botLeft':
-                    if event.key == pygame.K_UP:
-                        cursor_position = 'topLeft'
+            if battle.turn == 'player':
+                if current_menu == 'battle':
+                    if cursor_position == 'topLeft':
+                        if event.key == pygame.K_RIGHT:
+                            cursor_position = 'topRight'
+                        if event.key == pygame.K_DOWN:
+                            cursor_position = 'botLeft'
+                        if event.key == pygame.K_RETURN:
+                            battle.attack = True
+                    if cursor_position == 'botLeft':
+                        if event.key == pygame.K_UP:
+                            cursor_position = 'topLeft'
+                        if event.key == pygame.K_RETURN:
+                            current_menu = 'battle_items'
+                            cursor_position = 'topLeft'
+                    if cursor_position == 'topRight':
+                        if event.key == pygame.K_LEFT:
+                            cursor_position = 'topLeft'
+                        if event.key == pygame.K_RETURN:
+                            battle.flee = True
+
+                if current_menu == 'battle_items':
+                    if event.key == pygame.K_BACKSPACE:
+                        current_menu = 'battle'
+                    if cursor_position == 'topLeft':
+                        if event.key == pygame.K_DOWN:
+                            cursor_position ='botLeft'
+                        if event.key == pygame.K_z and player.items[1] == 'Healing Potion':
+                            player.items[1] = ''
+                            player.hp += 20
+                            print(player.hp)
+                    if cursor_position == 'botLeft':
+                        if event.key == pygame.K_UP:
+                            cursor_position = 'topLeft'
         
 
             
     #Game logic goes here
-    
+    #Direction checkers
     rooms.checkDirection()
     rooms.setDirection()
-    if rooms.current_room == 1:
+    #Battle encounter 1
+    if rooms.current_room == 1 and room1_first == True:
         battle.beginBattlePhase = True
         rooms.current_roomGhost = rooms.current_room
         rooms.current_room = 1004
         enemy.statgen(5, ['Claw', 2], ['Bite', 2])
+        room1_first = False
+        
+    if battle.turn == 'enemy':
+        print(enemy.hp)
+        if enemy.hp <= 0:
+            battle.battle = False
+            rooms.current_room = rooms.current_roomGhost
+            current_roomGhost = 1004
+            current_menu = 'main'
+        roll = random.randint(1,2)
+        if roll == 1:
+            battle.battleEvent = 'enemyAttack'
+            player.hp -= enemy.attacks[0][1]
+            print(enemy.attacks[0][1])
+            battle.turn = 'shadow_realm'
+        if roll == 2:
+            battle.battleEvent = 'enemyAttack'
+            player.hp -= enemy.attacks[1][1]
+            print(enemy.attacks[1][1])
+            battle.turn = 'shadow_realm'
+            
         
     ##Checking for locked doors and their keys##
     #Lock 1
@@ -294,7 +335,11 @@ while not done:
         rooms.event = True
         rooms.eventType = '9_FIRST'
     
+    ##Battle Event text creations
     
+
+
+        
     #clear screen
     screen.fill(BLACK)
 
@@ -305,10 +350,12 @@ while not done:
         menu.drawMenuBox(screen, WHITE)
     #screen.blit(roomimage_list[rooms.current_room], [0, 0])
 
+    #Room text draws
     if rooms.text == True and battle.battle == False and battle.beginBattlePhase == False:
         menu.drawTextBox(screen, WHITE)
         menu.drawRoomText(screen, roomFont, WHITE, rooms.current_room)
-    
+
+    #Event draws
     if rooms.event == True and battle.battle == False:
         menu.drawEventBox(screen)
         rooms.eventText = True
@@ -326,7 +373,7 @@ while not done:
             menu.drawEventText(screen, roomFont, WHITE, rooms.eventWashroom)
         
    
-        
+    #Menu text draws
     if current_menu == 'main':
         menu.drawMenuText(screen, font, WHITE)
     elif current_menu == 'move':
@@ -344,16 +391,28 @@ while not done:
 
     
 
-    
+    #Battle begin image draws
     if battle.beginBattlePhase == True:
         battle.beginBattle(screen, WHITE, font)
         current_menu = 'shadow_realm'
         cursor_position = 'shadow_realm'
+
+    #Battle phase draws
     if battle.battle == True:
         battle.drawBattleBox(screen, WHITE)
         battle.drawStats(screen, roomFont, WHITE)
-        
+
+        if battle.attack == True:
+            battle.rollPlayerAttack(player.equip)
+
+    
     menu.drawMenuCursorSimple(cursor_position, screen, WHITE)
+    if battle.battleEvent == 'spawn':
+        battle.event_text1 = 'An enemy has spawned!'
+        battle.drawBattleEventText(screen, WHITE, roomFont)
+    if battle.battleEvent == 'enemyAttack':
+        battle.event_text1 = 'The enemy attacks!'
+        battle.drawBattleEventText(screen, WHITE, roomFont)
     #Make sure draws go on screen
     pygame.display.flip()
 

@@ -1,8 +1,8 @@
 import pygame
 import random
 from Player import *
-player = Player()
-enemy = Enemy()
+
+
 pygame.init()
 
 class Battle():
@@ -33,7 +33,7 @@ class Battle():
         pygame.draw.rect(screen, color, [50, 350, 600, 125], 3)
 
     #Stat draws
-    def drawStats(self, screen, font, color):
+    def drawStats(self, screen, font, color, enemy, player):
         pygame.draw.rect(screen, color, [50, 320, 100, 25], 2)
         playerhpequals = font.render('HP = ', True, color)
         playerhp = font.render(str(player.hp), True, color)
@@ -61,7 +61,7 @@ class Battle():
         renderFlee = screen.blit(flee, [400, 360])
 
     #battle>Item text
-    def drawBattleItemText(self, screen, color, font):
+    def drawBattleItemText(self, screen, color, font, player):
         item1 = font.render(player.items[1], True, color)
         item2 = font.render(player.items[2], True, color)
         item3 = font.render(player.items[3], True, color)
@@ -80,10 +80,11 @@ class Battle():
         renderText1 = screen.blit(text1, [130, 360])
         renderText2 = screen.blit(text2, [130, 410])
 
-    def rollPlayerAttack(self, equip):
+    def rollPlayerAttack(self, equip, enemy):
         if equip == 'Wooden Sword':
             dmg = random.randint(2, 5)
             enemy.hp -= dmg
+            print('enemy health is',enemy.hp)
             self.attack = False
             self.turn = 'enemy'
 

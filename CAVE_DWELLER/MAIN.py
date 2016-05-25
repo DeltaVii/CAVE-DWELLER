@@ -49,6 +49,8 @@ font = pygame.font.Font('AdobeArabic-Regular.otf', 50)
 roomFont = pygame.font.Font('AdobeArabic-Regular.otf', 30)
 cursor_position = 'topLeft'
 current_menu = "main"
+game_over = False
+startup = True
 
 
 #Locks
@@ -60,8 +62,10 @@ key2 = False
 room0_first = True
 room1_first = True
 room2_first = True
+room7_first = True
 room8_first = True
 room9_first = True
+room10_first = True
 #Room images
 roomimage_list = []
 roomimage0 = pygame.image.load("img/room0.png").convert()
@@ -89,12 +93,18 @@ roomimage_list.append(roomimage10)
 #-----Main Loop-----#
 while not done:
     #Event loop, looking for inputs
+    
+        
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            print("User asked to quit")
+            
             done = True
         elif event.type == pygame.KEYDOWN:
-            print("User pressed a key")
+
+            if startup == True:
+                if event.key == pygame.K_c:
+                    startup = False
+            
             #main menu logic
             if current_menu == "main":
                 if cursor_position == 'topLeft':
@@ -104,7 +114,7 @@ while not done:
                         cursor_position = 'topRight'
                     if event.key == pygame.K_RETURN:
                         current_menu = 'player'
-                        print("The current menu is player")
+                        
                         cursor_position = 'topLeft'
                         
                 if cursor_position == 'botLeft':
@@ -147,7 +157,7 @@ while not done:
                         cursor_position = 'botRight'
                     if event.key == pygame.K_RETURN:
                         rooms.go = 'e'
-                        #print("go is now east.")
+                        
                         
                 if cursor_position == 'botRight':
                     if event.key == pygame.K_UP:
@@ -156,7 +166,7 @@ while not done:
                         cursor_position = 'botLeft'
                     if event.key == pygame.K_RETURN:
                         rooms.go = 'w'
-                        print("go is now west")
+                       
                         
             #Player menu logic
             if current_menu == 'player':
@@ -169,7 +179,7 @@ while not done:
                         cursor_position = 'botLeft'
                     if event.key == pygame.K_RETURN:
                         current_menu = 'items'
-                        print("The current menu is items")
+                        
                 if cursor_position == 'topRight':
                     if event.key == pygame.K_LEFT:
                         cursor_position = 'topLeft'
@@ -185,6 +195,23 @@ while not done:
             if current_menu == 'items':
                 if event.key == pygame.K_BACKSPACE:
                     current_menu = 'player'
+                if cursor_position == 'topLeft':
+                    if event.key == pygame.K_DOWN:
+                        cursor_position = 'botLeft'
+                    if event.key == pygame.K_RIGHT:
+                        cursor_position = 'topRight'
+                if cursor_position == 'topRight':
+                    if event.key == pygame.K_LEFT:
+                        cursor_position = 'topLeft'
+                    if event.key == pygame.K_z and player.items[2] == 'Healing Potion':
+                        player.items[2] = ''
+                        player.hp += 20
+                if cursor_position == 'botLeft':
+                    if event.key == pygame.K_UP:
+                        cursor_position = 'topLeft'
+                    if event.key == pygame.K_z and player.items[1] == 'Healing Potion':
+                        player.items[1] = ''
+                        player.hp += 20
             
             if current_menu == 'stats':
                 if event.key == pygame.K_BACKSPACE:
@@ -197,7 +224,7 @@ while not done:
            #Text logic
             if event.key == pygame.K_z:
                 rooms.text = False
-                print("text is false")
+                
             if event.key == pygame.K_x:
                 rooms.event = False
 
@@ -249,13 +276,17 @@ while not done:
                     if cursor_position == 'topLeft':
                         if event.key == pygame.K_DOWN:
                             cursor_position ='botLeft'
-                        if event.key == pygame.K_z and player.items[1] == 'Healing Potion':
-                            player.items[1] = ''
+                        if event.key == pygame.K_z and player.items[2] == 'Healing Potion':
+                            player.items[2] = ''
                             player.hp += 20
-                            print(player.hp)
+                            
                     if cursor_position == 'botLeft':
                         if event.key == pygame.K_UP:
                             cursor_position = 'topLeft'
+                        if event.key == pygame.K_z and player.items[1] == 'Healing Potion':
+                            player.items[1] = ''
+                            player.hp += 20
+                            
         
 
             
@@ -270,24 +301,39 @@ while not done:
         rooms.current_room = 1004
         enemy.statgen(5, ['Claw', 2], ['Bite', 2])
         room1_first = False
+
+    if rooms.current_room == 7 and room7_first == True:
+        battle.beginBattlePhase = True
+        rooms.current_roomGhost = rooms.current_room
+        rooms.current_room = 1004
+        enemy.statgen(15, ['Bite', 3], ['Claw', 4])
+        room7_first = False
+
+    if rooms.current_room == 10 and room10_first == True:
+        battle.beginBattlePhase = True
+        rooms.current_roomGhost = rooms.current_room
+        rooms.current_room = 1004
+        enemy.statgen(30, ['Death Scythe', 5], ['Death Beam', 10])
         
     if battle.turn == 'enemy':
-        print(enemy.hp)
+        print('enemy hp is',enemy.hp)
         if enemy.hp <= 0:
             battle.battle = False
             rooms.current_room = rooms.current_roomGhost
             current_roomGhost = 1004
             current_menu = 'main'
+            rooms.text = True
+            
         roll = random.randint(1,2)
         if roll == 1:
             battle.battleEvent = 'enemyAttack'
             player.hp -= enemy.attacks[0][1]
-            print(enemy.attacks[0][1])
+            print('enemy damage is',enemy.attacks[0][1])
             battle.turn = 'shadow_realm'
         if roll == 2:
             battle.battleEvent = 'enemyAttack'
             player.hp -= enemy.attacks[1][1]
-            print(enemy.attacks[1][1])
+            print('enemy damage is',enemy.attacks[1][1])
             battle.turn = 'shadow_realm'
             
         
@@ -384,10 +430,12 @@ while not done:
         menu.drawItemsPlayerMenuText(screen, font, WHITE)
     elif current_menu == 'keys':
         menu.drawKeysPlayerMenuText(screen, font, WHITE, key1, key2)
+    elif current_menu == 'stats':
+        menu.drawStatsPlayerMenuText(screen, font, WHITE, player)
     elif current_menu == 'battle':
         battle.drawBattleMainText(screen, WHITE, font)
     elif current_menu == 'battle_items':
-        battle.drawBattleItemText(screen, WHITE, font)
+        battle.drawBattleItemText(screen, WHITE, font, player)
 
     
 
@@ -400,10 +448,10 @@ while not done:
     #Battle phase draws
     if battle.battle == True:
         battle.drawBattleBox(screen, WHITE)
-        battle.drawStats(screen, roomFont, WHITE)
+        battle.drawStats(screen, roomFont, WHITE, enemy, player)
 
         if battle.attack == True:
-            battle.rollPlayerAttack(player.equip)
+            battle.rollPlayerAttack(player.equip, enemy)
 
     
     menu.drawMenuCursorSimple(cursor_position, screen, WHITE)
@@ -421,6 +469,29 @@ while not done:
 
     #mop up
     rooms.interact = False
+    
+    if game_over == True:
+        pygame.draw.rect(screen, BLACK,[0,0, 700,500], 0)
+        text1 = font.render('GAME', True, WHITE)
+        text2 = font.render('OVER', True, WHITE)
+        renderText1 = screen.blit(text1, [400, 200])
+        renderText2 = screen.blit(text2, [400, 220])
+
+    if player.hp <= 0:
+        game_over = True
+
+    if startup == True:
+        pygame.draw.rect(screen, BLACK, [0, 0, 700, 500], 0)
+        text1 = roomFont.render('Welcome to Cave Dweller.', True, WHITE)
+        text2 = roomFont.render('Use the arrow keys, enter, and backspace', True, WHITE)
+        text3 = roomFont.render('to navigate the menu.', True, WHITE)
+        text4 = roomFont.render('Sometimes, other text appears.', True, WHITE)
+        text5 = roomFont.render('Press X to dismiss event text,', True, WHITE)
+        text6 = roomFont.render('and Z to dismiss other text.', True, WHITE)
+        text7 = roomFont.render('Also press Z to use healing potions.', True, WHITE)
+        text8 = roomFont.render('Press C to exit this help window.', True, WHITE)
+        screen.blit(text1, [20, 20])
+        screen.blit(text2, [20, 40])
 #when loop is done, close window
 pygame.quit()
 

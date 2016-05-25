@@ -75,6 +75,14 @@ class Menu():
             key2 = font.render('Large Door Key', True, color)
             renderKey2 = screen.blit(key2, [130, 410])
 
+    #Player-Stats menu text
+    def drawStatsPlayerMenuText(self, screen, font, color, player):
+        text1 = font.render('HP =', True, color)
+        hp = str(player.hp)
+        text2 = font.render(hp, True, color)
+        renderText1 = screen.blit(text1, [130, 360])
+        renderText2 = screen.blit(text2, [220, 360])
+
     
 
     #Cursor placement    

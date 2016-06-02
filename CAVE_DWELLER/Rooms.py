@@ -163,7 +163,7 @@ class Rooms():
     
     eventLibrary = ["An open journal on the desk reads:",
                     "I don't think I emptied my pockets before the wash.",
-                    "I hope that doesn't cause any problems"]
+                    "I hope that doesn't cause any problems."]
     
     eventWashroom = ["You look in the washing machine and find",
                      "a pair of pants with keys in their pockets.", '']

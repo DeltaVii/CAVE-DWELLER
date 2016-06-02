@@ -183,14 +183,27 @@ while not done:
                 if cursor_position == 'topRight':
                     if event.key == pygame.K_LEFT:
                         cursor_position = 'topLeft'
+                    if event.key == pygame.K_DOWN:
+                        cursor_position = 'botRight'
                     if event.key == pygame.K_RETURN:
                         current_menu = 'stats'
+                        
                 if cursor_position == 'botLeft':
                     if event.key == pygame.K_UP:
                         cursor_position = 'topLeft'
+                    if event.key == pygame.K_RIGHT:
+                        cursor_position = 'botRight'
                     if event.key == pygame.K_RETURN:
                         current_menu = 'keys'
                         cursor_position = 'topLeft'
+
+                if cursor_position == 'botRight':
+                    if event.key == pygame.K_UP:
+                        cursor_position = 'topRight'
+                    if event.key == pygame.K_LEFT:
+                        cursour_position = 'botLeft'
+                    if event.key == pygame.K_RETURN:
+                        startup = True
 
             if current_menu == 'items':
                 if event.key == pygame.K_BACKSPACE:
@@ -461,21 +474,13 @@ while not done:
     if battle.battleEvent == 'enemyAttack':
         battle.event_text1 = 'The enemy attacks!'
         battle.drawBattleEventText(screen, WHITE, roomFont)
-    #Make sure draws go on screen
-    pygame.display.flip()
 
-    #set frames per second
-    clock.tick(60)
-
-    #mop up
-    rooms.interact = False
-    
     if game_over == True:
         pygame.draw.rect(screen, BLACK,[0,0, 700,500], 0)
         text1 = font.render('GAME', True, WHITE)
         text2 = font.render('OVER', True, WHITE)
-        renderText1 = screen.blit(text1, [400, 200])
-        renderText2 = screen.blit(text2, [400, 220])
+        renderText1 = screen.blit(text1, [300, 200])
+        renderText2 = screen.blit(text2, [310, 240])
 
     if player.hp <= 0:
         game_over = True
@@ -492,6 +497,22 @@ while not done:
         text8 = roomFont.render('Press C to exit this help window.', True, WHITE)
         screen.blit(text1, [20, 20])
         screen.blit(text2, [20, 40])
+        screen.blit(text3, [20, 60])
+        screen.blit(text4, [20, 80])
+        screen.blit(text5, [20, 100])
+        screen.blit(text6, [20, 120])
+        screen.blit(text7, [20, 140])
+        screen.blit(text8, [20, 160])
+    #Make sure draws go on screen
+    pygame.display.flip()
+
+    #set frames per second
+    clock.tick(60)
+
+    #mop up
+    rooms.interact = False
+    
+    
 #when loop is done, close window
 pygame.quit()
 

@@ -50,9 +50,11 @@ class Menu():
         items = font.render('Items', True, color)
         stats = font.render('Stats', True, color)
         keys = font.render('Keys', True, color)
+        help = font.render('Help', True, color)
         renderItems = screen.blit(items, [130, 360])
         renderStats = screen.blit(stats, [400, 360])
         renderKeys = screen.blit(keys, [130, 410])
+        renderHelp = screen.blit(help, [400, 410])
 
     #Player-Items menu text
     def drawItemsPlayerMenuText(self, screen, font, color):

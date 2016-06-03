@@ -26,6 +26,9 @@ RED   = (255,   0,   0)
 pygame.init()
 #get font
 font = pygame.font.SysFont('adobehebrew', 12)
+#get music
+pygame.mixer.music.load('audio/Undertale OST- 031 - Waterfall.mp3')
+pygame.mixer.music.play(loops=-1)
 
 #Create window
 size = (700, 500)

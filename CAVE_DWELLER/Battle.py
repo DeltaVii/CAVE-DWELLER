@@ -1,3 +1,11 @@
+####################
+## Kelly Norris
+##
+## June 2016 Semester 2
+##
+## CAVE DWELLER Battle file
+####################
+
 import pygame
 import random
 from Player import *

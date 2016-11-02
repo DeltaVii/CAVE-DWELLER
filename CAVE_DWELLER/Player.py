@@ -1,7 +1,7 @@
 ####################
 ## Kelly Norris
 ##
-## April 2016 Semester 2
+## June 2016 Semester 2
 ##
 ## CAVE DWELLER Player Class
 ####################

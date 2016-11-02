@@ -1,3 +1,11 @@
+####################
+## Kelly Norris
+##
+## June 2016 Semester 2
+##
+## CAVE DWELLER Rooms File
+####################
+
 
 import pygame
 pygame.init()

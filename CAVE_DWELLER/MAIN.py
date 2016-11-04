@@ -175,6 +175,7 @@ while not done:
             if current_menu == 'player':
                 if event.key == pygame.K_BACKSPACE:
                     current_menu = 'main'
+                    cursor_position = 'topLeft'
                 if cursor_position == 'topLeft':
                     if event.key == pygame.K_RIGHT:
                         cursor_position = 'topRight'
@@ -230,19 +231,27 @@ while not done:
                         player.hp += 20
             
             if current_menu == 'stats':
+                cursor_position = 'topLeft'
                 if event.key == pygame.K_BACKSPACE:
                     current_menu = 'player'
 
             if current_menu == 'keys':
+                cursor_position = 'topLeft'
                 if event.key == pygame.K_BACKSPACE:
                     current_menu = 'player'
                 
            #Text logic
             if event.key == pygame.K_z:
-                rooms.text = False
-                
-            if event.key == pygame.K_x:
-                rooms.event = False
+                if rooms.text == True and rooms.event == False:
+                    rooms.text = False
+                if rooms.text == True and rooms.event == True:
+                    rooms.event = False
+                if rooms.text == False and rooms.event == True:
+                    rooms.event = False
+               
+            #Legacy event dismissal
+            #if event.key == pygame.K_x:
+            #    rooms.event = False
 
             #Battle menues logic
             if battle.beginBattlePhase == True:
@@ -390,6 +399,7 @@ while not done:
             rooms.event = True
             rooms.eventType = '8_FIRST'
             key2 = True
+        
 
     if rooms.current_room == 9 and room9_first == True:
         room9_first = False
@@ -433,6 +443,8 @@ while not done:
             menu.drawEventText(screen, roomFont, WHITE, rooms.eventLibrary)
         if rooms.eventType == '8_FIRST':
             menu.drawEventText(screen, roomFont, WHITE, rooms.eventWashroom)
+        if rooms.eventType == 'None':
+            menu.drawEventText(screen, roomFont, WHITE, rooms.eventNone)
         
    
     #Menu text draws

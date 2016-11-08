@@ -9,6 +9,7 @@
 #Import files as needed
 import pygame
 import random
+import time
 #import basegame
 import basegame
 #import other files
@@ -54,6 +55,7 @@ cursor_position = 'topLeft'
 current_menu = "main"
 game_over = False
 startup = True
+menu_wait = False
 
 
 #Locks
@@ -117,14 +119,16 @@ while not done:
                         cursor_position = 'topRight'
                     if event.key == pygame.K_RETURN:
                         current_menu = 'player'
-                        
                         cursor_position = 'topLeft'
+                        menu_wait = True
+                        
                         
                 if cursor_position == 'botLeft':
                     if event.key == pygame.K_UP:
                         cursor_position = 'topLeft'
                     if event.key == pygame.K_RETURN:
                         current_menu = 'move'
+                        menu_wait = True
                         
                 if cursor_position == 'topRight':
                     if event.key == pygame.K_LEFT:
@@ -150,8 +154,9 @@ while not done:
                         cursor_position = 'topLeft'
                     if event.key == pygame.K_RIGHT:
                         cursor_position = 'botRight'
-                    if event.key == pygame.K_RETURN:
-                        rooms.go = 's'
+                    if menu_wait == False:
+                        if event.key == pygame.K_RETURN:
+                            rooms.go = 's'
                         
                 if cursor_position == 'topRight':
                     if event.key == pygame.K_LEFT:
@@ -181,8 +186,9 @@ while not done:
                         cursor_position = 'topRight'
                     if event.key == pygame.K_DOWN:
                         cursor_position = 'botLeft'
-                    if event.key == pygame.K_RETURN:
-                        current_menu = 'items'
+                    if menu_wait == False:
+                        if event.key == pygame.K_RETURN:
+                            current_menu = 'items'
                         
                 if cursor_position == 'topRight':
                     if event.key == pygame.K_LEFT:
@@ -205,7 +211,7 @@ while not done:
                     if event.key == pygame.K_UP:
                         cursor_position = 'topRight'
                     if event.key == pygame.K_LEFT:
-                        cursour_position = 'botLeft'
+                        cursor_position = 'botLeft'
                     if event.key == pygame.K_RETURN:
                         startup = True
 
@@ -371,6 +377,7 @@ while not done:
     if rooms.current_room == 3 and lock1 == True and key1 == False:
         rooms.current_room = 2
         rooms.event = True
+        rooms.text = False
         rooms.eventType = 'LOCK'
 
     #Lock 2
@@ -378,9 +385,12 @@ while not done:
         lock2 = False
         menu.drawEventBox(screen)
         rooms.event = True
-        rooms.eventType = 'LOCK'
+        rooms.eventType = 'UNLOCK'
     if rooms.current_room == 10 and lock2 == True and key2 == False:
         rooms.current_room = 7
+        rooms.event = True
+        rooms.text = False
+        rooms.eventType = 'LOCK'
 
     #Checking for first visit events#
     if rooms.current_room == 2 and room2_first == True:
@@ -399,7 +409,9 @@ while not done:
             rooms.event = True
             rooms.eventType = '8_FIRST'
             key2 = True
-        
+        if rooms.event == False:
+            rooms.event = True
+            rooms.eventType = 'None'
 
     if rooms.current_room == 9 and room9_first == True:
         room9_first = False
@@ -526,6 +538,7 @@ while not done:
 
     #mop up
     rooms.interact = False
+    menu_wait = False
     
     
 #when loop is done, close window

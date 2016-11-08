@@ -176,7 +176,7 @@ class Rooms():
     eventWashroom = ["You look in the washing machine and find",
                      "a pair of pants with keys in their pockets.", '']
 
-    eventNone = ["(Nothing happens",'','']
+    eventNone = ["(Nothing happens)",'','']
 
 
 

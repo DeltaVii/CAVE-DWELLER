@@ -79,6 +79,9 @@ class Menu():
 
     #Player-Keys menu text
     def drawKeysPlayerMenuText(self, screen, font, color, key1, key2):
+        if key1 == False and key2 == False:
+            nothing = font.render('(Nothing)', True, color)
+            renderNothing = screen.blit(nothing, [130, 360])
         if key1 == True:
             key1 = font.render('Cave Key', True, color)
             renderKey1 = screen.blit(key1, [130, 360])
@@ -138,19 +141,19 @@ class Menu():
     def drawEventBox(self, screen):
         WHITE = (255, 255, 255)
         BLACK = (0, 0, 0)
-        pygame.draw.rect(screen, BLACK, [50, 30, 600, 200], 0)
-        pygame.draw.rect(screen, WHITE, [50, 30, 600, 200], 3)
+        pygame.draw.rect(screen, BLACK, [75, 225, 550, 100], 0)
+        pygame.draw.rect(screen, WHITE, [75, 225, 550, 100], 3)
 
     #Event text
     def drawEventText(self, screen, font, color, eventType):
         text_line0 = font.render(eventType[0], True, color)
-        renderText_line0 = screen.blit(text_line0, [60, 35])
+        renderText_line0 = screen.blit(text_line0, [85, 235])
         
         text_line1 = font.render(eventType[1], True, color)
-        renderText_line1 = screen.blit(text_line1, [60, 60])
+        renderText_line1 = screen.blit(text_line1, [85, 260])
         
         text_line2 = font.render(eventType[2], True, color)
-        renderText_line2 = screen.blit(text_line2, [60, 85])
+        renderText_line2 = screen.blit(text_line2, [85, 285])
         
 
 

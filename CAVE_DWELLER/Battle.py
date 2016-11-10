@@ -18,6 +18,7 @@ class Battle():
         pass
     #needed variables
     beginBattlePhase = False
+    endBattlePhase = False
     battle = False
     flee = False
     attack = False
@@ -30,11 +31,19 @@ class Battle():
     def beginBattle(self, screen, color, font):
         BLACK = [0,0,0]
         pygame.draw.rect(screen, BLACK, [0,0,700,500], 0)
-        pygame.draw.rect(screen, color, [200, 100, 300, 250], 2)
+        pygame.draw.rect(screen, color, [245, 80, 200, 250], 2)
         pygame.draw.polygon(screen, color, [[330, 225],[355, 225],[355,250],[330,250]], 0)
         pygame.draw.polygon(screen, color, [[330, 200],[355,200],[355, 110],[330,110]], 0)
-        text = font.render('An enemy appears!', True, color)
-        renderText = screen.blit(text, [209, 250])
+        text = font.render('BATTLE!', True, color)
+        renderText = screen.blit(text, [275, 250])
+
+    def endBattle(self, screen, color, font):
+        BLACK = [0,0,0]
+        pygame.draw.rect(screen, BLACK, [0,0,700,500], 0)
+        pygame.draw.rect(screen, color, [200, 175, 300, 100], 2)
+        text = font.render('Enemy Defeated!', True, color)
+        renderText = screen.blit(text, [225, 200])
+        
 
     #Battle menu box
     def drawBattleBox(self, screen, color):
@@ -80,13 +89,13 @@ class Battle():
 
     def drawBattleEventText(self, screen, color, font):
         BLACK = [0, 0, 0]
-        pygame.draw.rect(screen, color, [50, 350, 600, 125], 3)
-        pygame.draw.rect(screen, BLACK, [50, 350, 600, 125], 0)
+        pygame.draw.rect(screen, BLACK, [100, 200, 500, 100], 0)
+        pygame.draw.rect(screen, color, [100, 200, 500, 100], 3)
         text1 = font.render(self.event_text1, True, color)
         text2 = font.render(self.event_text2, True, color)
 
-        renderText1 = screen.blit(text1, [130, 360])
-        renderText2 = screen.blit(text2, [130, 410])
+        renderText1 = screen.blit(text1, [130, 220])
+        renderText2 = screen.blit(text2, [130, 610])
 
     def rollPlayerAttack(self, equip, enemy):
         if equip == 'Wooden Sword':

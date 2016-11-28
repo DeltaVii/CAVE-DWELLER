@@ -26,6 +26,7 @@ class Battle():
     event_text1 = ''
     event_text2 = ''
     battleEvent = ''
+    enemy = 0
 
     #Begin Battle image
     def beginBattle(self, screen, color, font):
@@ -95,7 +96,7 @@ class Battle():
         text2 = font.render(self.event_text2, True, color)
 
         renderText1 = screen.blit(text1, [130, 220])
-        renderText2 = screen.blit(text2, [130, 610])
+        renderText2 = screen.blit(text2, [130, 240])
 
     def rollPlayerAttack(self, equip, enemy):
         if equip == 'Wooden Sword':
@@ -103,8 +104,20 @@ class Battle():
             enemy.hp -= dmg
             print('enemy health is',enemy.hp)
             self.attack = False
-            self.turn = 'enemy'
+            self.event_text1 = "Your attack's damage was "
+            self.event_text2 = str(dmg)
+            self.battleEvent = 'player_attack'
 
+    def drawEnemy(self, screen):
+        if self.enemy == 1:
+            image = pygame.image.load("img/enemy1.png").convert()
+            screen.blit(image, [350, 100])
+        if self.enemy == 2:
+            image = pygame.image.load("img/enemy2.png").convert()
+            screen.blit(image, [350, 100])
+        if self.enemy == 3:
+            image = pygame.image.load("img/enemy3.png").convert()
+            screen.blit(image, [350, 100])
 
 
         

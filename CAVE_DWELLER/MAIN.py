@@ -297,6 +297,12 @@ while not done:
                     battle.battleEvent = ''
                     battle.event_text1 = ''
                     battle.turn = 'player'
+            if battle.battleEvent == 'player_attack':
+                if event.key == pygame.K_z:
+                    battle.battleEvent = ''
+                    battle.turn = 'enemy'
+                    battle.event_text1 = ''
+                    battle.event_text2 = ''
 
             
             
@@ -350,20 +356,24 @@ while not done:
     rooms.setDirection()
     #Battle encounter 1
     if rooms.current_room == 1 and room1_first == True:
+        battle.enemy = 1
         battle.beginBattlePhase = True
         rooms.current_roomGhost = rooms.current_room
         rooms.current_room = 1004
         enemy.statgen(5, ['Claw', 2], ['Bite', 2])
         room1_first = False
-
+        
+    #Battle encounter 2
     if rooms.current_room == 7 and room7_first == True:
+        battle.enemy = 2
         battle.beginBattlePhase = True
         rooms.current_roomGhost = rooms.current_room
         rooms.current_room = 1004
         enemy.statgen(15, ['Bite', 3], ['Claw', 4])
         room7_first = False
-
+    #Final battle
     if rooms.current_room == 10 and room10_first == True:
+        battle.enemy = 3
         battle.beginBattlePhase = True
         rooms.current_roomGhost = rooms.current_room
         rooms.current_room = 1004
@@ -510,15 +520,21 @@ while not done:
     if battle.battle == True:
         battle.drawBattleBox(screen, WHITE)
         battle.drawStats(screen, roomFont, WHITE, enemy, player)
+        battle.drawEnemy(screen)
+        
 
         if battle.attack == True:
             battle.rollPlayerAttack(player.equip, enemy)
+            battle.turn = 'shadow_realm'
         if battle.battleEvent == 'spawn':
             battle.event_text1 = 'An enemy has appeared!'
             battle.drawBattleEventText(screen, WHITE, roomFont)
         if battle.battleEvent == 'enemyAttack':
             battle.event_text1 = 'The enemy attacks!'
             battle.drawBattleEventText(screen, WHITE, roomFont)
+        if battle.battleEvent == 'player_attack':
+            battle.drawBattleEventText(screen, WHITE, roomFont)
+
 
     #Battle end draw
     if battle.battleEvent == 'end':

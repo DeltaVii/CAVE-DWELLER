@@ -12,7 +12,7 @@ import random
 import time
 #import basegame
 import basegame
-#import other files
+#import supporting classes
 from Rooms import *
 from Menu import *
 from Player import *
@@ -25,8 +25,10 @@ RED   = (255,   0,   0)
 
 #initialize pygame
 pygame.init()
-#get font
+#creating font vars
 font = pygame.font.SysFont('adobehebrew', 12)
+font = pygame.font.Font('AdobeArabic-Regular.otf', 50)
+roomFont = pygame.font.Font('AdobeArabic-Regular.otf', 30)
 #get music
 pygame.mixer.music.load('audio/Undertale OST- 031 - Waterfall.mp3')
 pygame.mixer.music.play(loops=-1)
@@ -36,21 +38,20 @@ size = (700, 500)
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption("Window Title goes here")
 
-#making instances of logic files
+#making instances of supporting classes
 rooms = Rooms()
 menu = Menu()
 player = Player()
 battle = Battle()
 enemy = Enemy()
-#making main loop variables:
+
+##making main loop variables:
 #done for loop
 done = False
 #clock for screen updates
 clock = pygame.time.Clock()
 
 #Other variables for looping:
-font = pygame.font.Font('AdobeArabic-Regular.otf', 50)
-roomFont = pygame.font.Font('AdobeArabic-Regular.otf', 30)
 cursor_position = 'topLeft'
 current_menu = "main"
 game_over = False
@@ -59,12 +60,12 @@ menu_wait = False
 z_wait = False
 
 
-#Locks
+#Lock vars
 lock1 = True
 lock2 = True
 key1 = False
 key2 = False
-#First Visit checks
+#First Visit vars
 room0_first = True
 room1_first = True
 room2_first = True
@@ -96,23 +97,29 @@ roomimage9 = pygame.image.load("img/room9.png").convert()
 roomimage_list.append(roomimage9)
 roomimage10 = pygame.image.load("img/room10.png").convert()
 roomimage_list.append(roomimage10)
+
+#####################
+#Initialization done#
+#####################
+
 #-----Main Loop-----#
 while not done:
-    #Event loop, looking for inputs
-    
-        
+    #Big 'ol Event Loop
+    #First checks if the game is being quit
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            
             done = True
+        #Checking for keydown event
+        #This loop is massive, be warned
         elif event.type == pygame.KEYDOWN:
-
+            #Checking for startup/help window, pressing C makes it leave
             if startup == True:
                 if event.key == pygame.K_c:
                     startup = False
             
-            #main menu logic
+            ###Main Menu logic
             if current_menu == "main":
+                #top left - 'player' text
                 if cursor_position == 'topLeft':
                     if event.key == pygame.K_DOWN:
                         cursor_position = 'botLeft'
@@ -123,25 +130,30 @@ while not done:
                         cursor_position = 'topLeft'
                         menu_wait = True
                         
-                        
+                #bottom left - 'move' text
                 if cursor_position == 'botLeft':
                     if event.key == pygame.K_UP:
                         cursor_position = 'topLeft'
                     if event.key == pygame.K_RETURN:
                         current_menu = 'move'
                         menu_wait = True
-                        
+
+                #top right - 'interact' text
                 if cursor_position == 'topRight':
                     if event.key == pygame.K_LEFT:
                         cursor_position = 'topLeft'
                     if event.key == pygame.K_RETURN:
                         rooms.interact = True
+
                         
-            #move menu logic
+            ###Move menu logic
             if current_menu == 'move':
+                #backspace, to main menu
                 if event.key == pygame.K_BACKSPACE:
                     current_menu = 'main'
                     cursor_position = 'topLeft'
+                    
+                #top left - 'north' text
                 if cursor_position == 'topLeft':
                     if event.key == pygame.K_DOWN:
                         cursor_position = 'botLeft'
@@ -149,7 +161,9 @@ while not done:
                         cursor_position = 'topRight'
                     if event.key == pygame.K_RETURN:
                         rooms.go = 'n'
-                        
+
+                #bottom left - 'south' text
+                #Uses the menu_wait var, which prevents going from the main menu into the move menu and still having the 'return' key active and pressing 'south'
                 if cursor_position == 'botLeft':
                     if event.key == pygame.K_UP:
                         cursor_position = 'topLeft'
@@ -158,7 +172,8 @@ while not done:
                     if menu_wait == False:
                         if event.key == pygame.K_RETURN:
                             rooms.go = 's'
-                        
+
+                #top right - 'east' text
                 if cursor_position == 'topRight':
                     if event.key == pygame.K_LEFT:
                         cursor_position = 'topLeft'
@@ -167,7 +182,7 @@ while not done:
                     if event.key == pygame.K_RETURN:
                         rooms.go = 'e'
                         
-                        
+                #bottom right - 'west' text
                 if cursor_position == 'botRight':
                     if event.key == pygame.K_UP:
                         cursor_position = 'topRight'
@@ -177,11 +192,15 @@ while not done:
                         rooms.go = 'w'
                        
                         
-            #Player menu logic
+            ###Player menu logic
             if current_menu == 'player':
+                #backspace, goes to main menu
                 if event.key == pygame.K_BACKSPACE:
                     current_menu = 'main'
                     cursor_position = 'topLeft'
+
+                #top left - 'items' text
+                #Uses the menu_wait var, which prevents going from the main menu into the player menu and still having the 'return' key active and pressing 'items'
                 if cursor_position == 'topLeft':
                     if event.key == pygame.K_RIGHT:
                         cursor_position = 'topRight'
@@ -190,7 +209,8 @@ while not done:
                     if menu_wait == False:
                         if event.key == pygame.K_RETURN:
                             current_menu = 'items'
-                        
+
+                #top right - 'stats' text
                 if cursor_position == 'topRight':
                     if event.key == pygame.K_LEFT:
                         cursor_position = 'topLeft'
@@ -198,7 +218,8 @@ while not done:
                         cursor_position = 'botRight'
                     if event.key == pygame.K_RETURN:
                         current_menu = 'stats'
-                        
+
+                #bottom left - 'keys' text
                 if cursor_position == 'botLeft':
                     if event.key == pygame.K_UP:
                         cursor_position = 'topLeft'
@@ -208,6 +229,7 @@ while not done:
                         current_menu = 'keys'
                         cursor_position = 'topLeft'
 
+                #bottom right - 'help' text
                 if cursor_position == 'botRight':
                     if event.key == pygame.K_UP:
                         cursor_position = 'topRight'
@@ -216,51 +238,58 @@ while not done:
                     if event.key == pygame.K_RETURN:
                         startup = True
 
+
+            ###Items menu logic
             if current_menu == 'items':
+                #backspace, goes to player menu
                 if event.key == pygame.K_BACKSPACE:
                     current_menu = 'player'
+
+                #top left - weapon text
                 if cursor_position == 'topLeft':
                     if event.key == pygame.K_DOWN:
                         cursor_position = 'botLeft'
                     if event.key == pygame.K_RIGHT:
                         cursor_position = 'topRight'
+
+                #top right - health potion
                 if cursor_position == 'topRight':
                     if event.key == pygame.K_LEFT:
                         cursor_position = 'topLeft'
+                    #if a healing potion is there, the player can press z to use it
                     if event.key == pygame.K_z and player.items[2] == 'Healing Potion':
                         player.items[2] = ''
                         player.hp += 20
+
+                #bottom left - health potion
                 if cursor_position == 'botLeft':
                     if event.key == pygame.K_UP:
                         cursor_position = 'topLeft'
+                    #if a healing potion is there, the player can press z to use it
                     if event.key == pygame.K_z and player.items[1] == 'Healing Potion':
                         player.items[1] = ''
                         player.hp += 20
-            
+
+
+            ###Stats menu logic
             if current_menu == 'stats':
+                #reset cursor to not go to blank space
                 cursor_position = 'topLeft'
+                #backspace, goes to player menu
                 if event.key == pygame.K_BACKSPACE:
                     current_menu = 'player'
 
+            ###Keys menu logic
             if current_menu == 'keys':
+                #reset cursor to not go to blank space
                 cursor_position = 'topLeft'
+                #backspace, goes to player menu
                 if event.key == pygame.K_BACKSPACE:
                     current_menu = 'player'
                 
-           #Text logic
-            if event.key == pygame.K_z:
-                if rooms.text == True and rooms.event == False:
-                    rooms.text = False
-                if rooms.text == True and rooms.event == True:
-                    rooms.event = False
-                if rooms.text == False and rooms.event == True:
-                    rooms.event = False
-               
-            #Legacy event dismissal
-            #if event.key == pygame.K_x:
-            #    rooms.event = False
-
-            #Battle menu logic
+            
+            ###Battle text logic
+            #battle start screen
             if battle.beginBattlePhase == True:
                 if event.key == pygame.K_z:
                     battle.battle = True
@@ -271,14 +300,15 @@ while not done:
                     battle.turn = 'shadow_realm'
                     battle.battleEvent = 'spawn'
                     z_wait = True
-                    
+
+            #battle defeat monster end
             if battle.battleEvent == 'end':
                 battle.battleEvent = ''
                 battle.battle = False
                 battle.turn = 'shadow_realm'
                 cursor_position = 'shadow_realm'
                 print('battle is false')
-                #battle.endBattle(screen, WHITE, roomFont)
+                #dismissing battle end text and going back to room
                 if event.key == pygame.K_z:
                     rooms.current_room = rooms.current_roomGhost
                     current_roomGhost = 1004
@@ -286,17 +316,22 @@ while not done:
                     rooms.text = True
                     cursor_position = 'topLeft'
                     battle.endBattlePhase = False
-                    
+
+            #battle 'enemy has appeared' text dismissal
             if battle.battleEvent == 'spawn':
                 if z_wait == False:
                     if event.key == pygame.K_z:
                         battle.battleEvent = ''
                         battle.turn = 'player'
+
+            #battle 'enemy has attacked' text dismissal
             if battle.battleEvent == 'enemyAttack':
                 if event.key == pygame.K_z:
                     battle.battleEvent = ''
                     battle.event_text1 = ''
                     battle.turn = 'player'
+
+            #battle 'you attack' text dismissal
             if battle.battleEvent == 'player_attack':
                 if event.key == pygame.K_z:
                     battle.battleEvent = ''
@@ -305,9 +340,12 @@ while not done:
                     battle.event_text2 = ''
 
             
-            
+
+            ###Battle menu logic
             if battle.turn == 'player':
+                ##Main battle menu
                 if current_menu == 'battle':
+                    #top left - 'attack' text
                     if cursor_position == 'topLeft':
                         if event.key == pygame.K_RIGHT:
                             cursor_position = 'topRight'
@@ -315,6 +353,9 @@ while not done:
                             cursor_position = 'botLeft'
                         if event.key == pygame.K_RETURN:
                             battle.attack = True
+
+                    #bottom left - 'items' text
+                    #uses menu_wait var to prevent using a health potion on the same loop as going into the menu
                     if cursor_position == 'botLeft':
                         if event.key == pygame.K_UP:
                             cursor_position = 'topLeft'
@@ -322,24 +363,31 @@ while not done:
                             current_menu = 'battle_items'
                             cursor_position = 'topLeft'
                             menu_wait = True
+
+                    #top right - 'flee' text
                     if cursor_position == 'topRight':
                         if event.key == pygame.K_LEFT:
                             cursor_position = 'topLeft'
                         if event.key == pygame.K_RETURN:
                             battle.flee = True
 
+                ##Battle items menu
+                #uses menu_wait
                 if current_menu == 'battle_items':
+                    #backspace, goes to battle main menu
                     if event.key == pygame.K_BACKSPACE:
                         current_menu = 'battle'
                     if menu_wait == False:
+                        #top left - healing potion 
                         if cursor_position == 'topLeft':
                             if event.key == pygame.K_DOWN:
                                 cursor_position ='botLeft'
+                            #using healing potion
                             if event.key == pygame.K_RETURN and player.items[1] == 'Healing Potion':
                                 player.items[1] = ''
                                 player.hp += 20
                                 
-                            
+                    #bottom left - healing potion
                     if cursor_position == 'botLeft':
                         if event.key == pygame.K_UP:
                             cursor_position = 'topLeft'
@@ -348,10 +396,18 @@ while not done:
                             player.hp += 20
                             
         
-
+            #Text dismissal logic
+            if event.key == pygame.K_z:
+                if rooms.text == True and rooms.event == False:
+                    rooms.text = False
+                if rooms.text == True and rooms.event == True:
+                    rooms.event = False
+                if rooms.text == False and rooms.event == True:
+                    rooms.event = False
+                    
             
     #Game logic goes here
-    #Direction checkers
+    #Direction checkers for moving between rooms
     rooms.checkDirection()
     rooms.setDirection()
     #Battle encounter 1
@@ -371,6 +427,7 @@ while not done:
         rooms.current_room = 1004
         enemy.statgen(15, ['Bite', 3], ['Claw', 4])
         room7_first = False
+        
     #Final battle
     if rooms.current_room == 10 and room10_first == True:
         battle.enemy = 3
@@ -378,13 +435,15 @@ while not done:
         rooms.current_roomGhost = rooms.current_room
         rooms.current_room = 1004
         enemy.statgen(30, ['Death Scythe', 5], ['Death Beam', 10])
-        
+
+    #Battle enemy turn
     if battle.turn == 'enemy':
         print('enemy hp is',enemy.hp)
         if enemy.hp <= 0:
             battle.battleEvent = 'end'
             battle.endBattlePhase = True
-            
+
+        #rolling for which attack enemy uses
         roll = random.randint(1,2)
         if battle.battleEvent != 'end':
             if roll == 1:
@@ -399,8 +458,8 @@ while not done:
                 battle.turn = 'shadow_realm'
             
         
-    ##Checking for locked doors and their keys##
-    #Lock 1
+    ##Checking for locked doors and their keys
+    #Lock 1 - room 3
     if rooms.current_room == 3 and lock1 == True and key1 == True:
         lock1 = False
         rooms.event = True
@@ -411,7 +470,7 @@ while not done:
         rooms.text = False
         rooms.eventType = 'LOCK'
 
-    #Lock 2
+    #Lock 2 - room 10
     if rooms.current_room == 10 and lock2 == True and key2 == True:
         lock2 = False
         menu.drawEventBox(screen)
@@ -423,19 +482,31 @@ while not done:
         rooms.text = False
         rooms.eventType = 'LOCK'
 
-    #Checking for first visit events#
+
+    ##Checking for first visit events
+    #room 2
     if rooms.current_room == 2 and room2_first == True:
         room0_first = False
         rooms.event = True
         rooms.eventType = '2_FIRST'
         room2_first = False
+    #room 9
+    if rooms.current_room == 9 and room9_first == True:
+        room9_first = False
+        room8_first = False
+        rooms.event = True
+        rooms.eventType = '9_FIRST'
 
+
+    ##Interactions
     if rooms.interact == True:
+        #room 1
         if rooms.current_room == 0 and room0_first == False:
             rooms.event = True
             rooms.eventType = '0_FIRST'
             key1 = True
             rooms.interact = False
+        #room 8
         if rooms.current_room == 8 and room8_first == False:
             rooms.event = True
             rooms.eventType = '8_FIRST'
@@ -444,11 +515,7 @@ while not done:
             rooms.event = True
             rooms.eventType = 'None'
 
-    if rooms.current_room == 9 and room9_first == True:
-        room9_first = False
-        room8_first = False
-        rooms.event = True
-        rooms.eventType = '9_FIRST'
+    
     
     ##Battle Event text creations
     

@@ -1,14 +1,17 @@
 ####################
 ## Kelly Norris
 ##
-## June 2016 Semester 2
+## December 2016 Semester 2
 ##
-## CAVE DWELLER Player Class
+## CAVE DWELLER EX Player Class
 ####################
 
+#start player class
 class Player():
+    #nothing for init
     def __init__(self):
         pass
+    #creating vars
     hp = 20
     xp = 0
     items = []
@@ -18,9 +21,12 @@ class Player():
     items.append('')
     equip = items[0]
 
+#start enemy class
 class Enemy():
+    #nothing for init
     def __init__(self):
         pass
+    #creating vars
     name = ''
     hp = 5
     attacks = []

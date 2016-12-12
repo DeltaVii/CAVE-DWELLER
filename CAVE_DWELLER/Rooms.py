@@ -1,18 +1,22 @@
 ####################
 ## Kelly Norris
 ##
-## June 2016 Semester 2
+## December 2016 Semester 1
 ##
-## CAVE DWELLER Rooms File
+## CAVE DWELLER EX Rooms File
 ####################
 
-
+#importing library
 import pygame
+#initializing pygame for vars
 pygame.init()
 
+#start class
 class Rooms():
+    #nothing for init
     def __init__(self):
         pass
+    #creating vars
     text = True
     eventText = False
     room_list = []
@@ -23,6 +27,8 @@ class Rooms():
     event = False
     eventType = None
     interact = False
+
+    
     ##Adding rooms to the room list
     #Room 0: House
     def drawHouse(self, screen, color):
@@ -69,30 +75,28 @@ class Rooms():
         elif self.go == "e":
             self.next_room = self.room_list[self.current_room][1]
             self.go = None
-            print("Next room has been set to the east.")
         elif self.go == "s":
             self.next_room = self.room_list[self.current_room][2]
             self.go = None
         elif self.go == "w":
             self.next_room = self.room_list[self.current_room][3]
-            print("Next room has been set to the west.")
             self.go = None
 
     #switching current rooms  
     def setDirection(self):
         if self.next_room != None:
             self.current_room = self.next_room
-            print("Current room is now next room.")
             self.go = None
             self.next_room = None
             print(self.current_room)
             self.text = True
-            print("text is", self.text)
         else:
             self.next_room = None
-            #print("Next room was none")
+            
 
+    ##Creating room text list and adding text to the list for each room
     room_text = []
+
     room0text = ["You stand in a small, friendly looking house.",
     "There's a counter with cupboards and a sink, and a small table.",
     "The curtains are all closed.",
@@ -163,10 +167,13 @@ class Rooms():
     "For now."]
     room_text.append(room10text)
 
-
+    ##Event texts
     eventLock = ["The door is locked.",'','']
+    
     eventUnlock = ["You unlock the door.",'','']
+    
     eventCaveHall = ["A sign on the door reads: 'Check the Sink'.",'','']
+    
     eventHouse = ["You look under the sink and find a key.",'','']
     
     eventLibrary = ["An open journal on the desk reads:",

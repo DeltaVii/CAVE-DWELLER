@@ -1,22 +1,25 @@
 ####################
 ## Kelly Norris
 ##
-## June 2016 Semester 2
+## December 2016 Semester 1
 ##
-## CAVE DWELLER Battle file
+## CAVE DWELLER EX Battle file
 ####################
 
+#importing libraries
 import pygame
 import random
 from Player import *
 
-
+#initializing pygame to use its variables
 pygame.init()
 
+#start class
 class Battle():
+    #Nothing happens on initialize
     def __init__(self):
         pass
-    #needed variables
+    #creating variables for functions
     beginBattlePhase = False
     endBattlePhase = False
     battle = False
@@ -38,6 +41,7 @@ class Battle():
         text = font.render('BATTLE!', True, color)
         renderText = screen.blit(text, [275, 250])
 
+    #End Battle image
     def endBattle(self, screen, color, font):
         BLACK = [0,0,0]
         pygame.draw.rect(screen, BLACK, [0,0,700,500], 0)
@@ -88,6 +92,7 @@ class Battle():
         renderItem2 = screen.blit(item2, [130,410])
         renderItem3 = screen.blit(item3, [400,360])
 
+    #Drawing battle event text
     def drawBattleEventText(self, screen, color, font):
         BLACK = [0, 0, 0]
         pygame.draw.rect(screen, BLACK, [100, 200, 500, 100], 0)
@@ -98,16 +103,17 @@ class Battle():
         renderText1 = screen.blit(text1, [130, 220])
         renderText2 = screen.blit(text2, [130, 240])
 
+    #Rolling attack values
     def rollPlayerAttack(self, equip, enemy):
         if equip == 'Wooden Sword':
             dmg = random.randint(2, 5)
             enemy.hp -= dmg
-            print('enemy health is',enemy.hp)
             self.attack = False
             self.event_text1 = "Your attack's damage was "
             self.event_text2 = str(dmg)
             self.battleEvent = 'player_attack'
 
+    #Drawing enemy sprite
     def drawEnemy(self, screen):
         if self.enemy == 1:
             image = pygame.image.load("img/enemy1.png").convert()

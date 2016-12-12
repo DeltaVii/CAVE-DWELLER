@@ -1,29 +1,32 @@
 ####################
 ## Kelly Norris
 ##
-## June 2016 Semester 2
+## December 2016 Semester 1
 ##
-## CAVE DWELLER Menu File
+## CAVE DWELLER EX Menu File
 ####################
 
-
+#importing libraries
 import pygame
-import basegame
 from Rooms import *
 from Player import *
 rooms = Rooms()
 player = Player()
+
+#initializing pygame for its vars
 pygame.init()
 
-#create class
+#start class
 class Menu():
+    #nothing for init
     def __init__(self):
         pass
 
-    #draw the box for the menu
+    #Main menu box
     def drawMenuBox(self,screen,color):
         return pygame.draw.rect(screen, color, [50, 350, 600, 125], 3)
 
+    #Drawing box for room text
     def drawTextBox(self, screen, color):
         BLACK = (0, 0, 0)
         return (pygame.draw.rect(screen, BLACK, [50, 30, 600, 200], 0),
@@ -102,13 +105,10 @@ class Menu():
     #Cursor placement    
     def drawMenuCursorSimple(self, cursor_position, screen, color):
         if cursor_position == 'topLeft':
-            #draw = drawMenuCursor(screen, WHITE, 130,130,140,375,395,385)
             return pygame.draw.polygon(screen, color, [[110,375],[110,395],[120,385]], 0)
         if cursor_position == 'botLeft':
-            #menu.drawMenuCursor(screen, WHITE, 130,130,140,425,445,435)
             return pygame.draw.polygon(screen, color, [[110,425],[110,445],[120,435]], 0)
         if cursor_position == 'topRight':
-            #menu.drawMenuCursor(screen, WHITE, 400,400,410,375,395,385)
             return pygame.draw.polygon(screen, color, [[380,375],[380,395],[390,385]], 0)
         if cursor_position == 'botRight':
             return pygame.draw.polygon(screen, color, [[380,425],[380,445],[390,435]], 0)

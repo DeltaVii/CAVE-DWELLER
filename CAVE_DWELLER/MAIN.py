@@ -1,27 +1,29 @@
 ####################
 ## Kelly Norris
 ##
-## June 2016 Semester 2
+## December 2016 Semester 1
 ##
-## CAVE DWELLER Main File
+## CAVE DWELLER EX Main File
 ####################
 
-#Import files as needed
+#Importing libraries
 import pygame
 import random
 import time
-#import basegame
-import basegame
+
 #import supporting classes
 from Rooms import *
 from Menu import *
 from Player import *
 from Battle import *
-#Declare colors for draws
-BLACK = (  0,   0,   0)
-WHITE = (255, 255, 255)
-GREEN = (  0, 255,   0)
-RED   = (255,   0,   0)
+#making instances of supporting classes
+rooms = Rooms()
+menu = Menu()
+player = Player()
+battle = Battle()
+enemy = Enemy()
+
+
 
 #initialize pygame
 pygame.init()
@@ -38,14 +40,10 @@ size = (700, 500)
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption("Window Title goes here")
 
-#making instances of supporting classes
-rooms = Rooms()
-menu = Menu()
-player = Player()
-battle = Battle()
-enemy = Enemy()
+
 
 ##making main loop variables:
+
 #done for loop
 done = False
 #clock for screen updates
@@ -59,6 +57,11 @@ startup = True
 menu_wait = False
 z_wait = False
 
+#Declare colors for draws
+BLACK = (  0,   0,   0)
+WHITE = (255, 255, 255)
+GREEN = (  0, 255,   0)
+RED   = (255,   0,   0)
 
 #Lock vars
 lock1 = True
@@ -294,7 +297,6 @@ while not done:
                 if event.key == pygame.K_z:
                     battle.battle = True
                     battle.beginBattlePhase = False
-                    print("battle is true")
                     cursor_position = 'topLeft'
                     current_menu = 'battle'
                     battle.turn = 'shadow_realm'
@@ -307,7 +309,6 @@ while not done:
                 battle.battle = False
                 battle.turn = 'shadow_realm'
                 cursor_position = 'shadow_realm'
-                print('battle is false')
                 #dismissing battle end text and going back to room
                 if event.key == pygame.K_z:
                     rooms.current_room = rooms.current_roomGhost
@@ -438,7 +439,6 @@ while not done:
 
     #Battle enemy turn
     if battle.turn == 'enemy':
-        print('enemy hp is',enemy.hp)
         if enemy.hp <= 0:
             battle.battleEvent = 'end'
             battle.endBattlePhase = True
@@ -449,12 +449,10 @@ while not done:
             if roll == 1:
                 battle.battleEvent = 'enemyAttack'
                 player.hp -= enemy.attacks[0][1]
-                print('enemy damage is',enemy.attacks[0][1])
                 battle.turn = 'shadow_realm'
             if roll == 2:
                 battle.battleEvent = 'enemyAttack'
                 player.hp -= enemy.attacks[1][1]
-                print('enemy damage is',enemy.attacks[1][1])
                 battle.turn = 'shadow_realm'
             
         
@@ -517,20 +515,19 @@ while not done:
 
     
     
-    ##Battle Event text creations
     
 
-
-        
+    ###Drawing things on screen
+    
     #clear screen
     screen.fill(BLACK)
 
-    #Draws go here
+    ##Exploration Phase Draws
+    #Drawing room
     if battle.battle == False and battle.beginBattlePhase == False and battle.endBattlePhase == False:
         screen.blit(roomimage_list[rooms.current_room], [0, 0])
         pygame.draw.rect(screen, BLACK, [50, 350, 600, 125], 0)
         menu.drawMenuBox(screen, WHITE)
-    #screen.blit(roomimage_list[rooms.current_room], [0, 0])
 
     #Room text draws
     if rooms.text == True and battle.battle == False and battle.beginBattlePhase == False:
@@ -576,20 +573,19 @@ while not done:
         battle.drawBattleItemText(screen, WHITE, font, player)
 
     
-
-    #Battle begin image draws
+    ##Battle Phase Draws
+    #Battle begin image
     if battle.beginBattlePhase == True:
         battle.beginBattle(screen, WHITE, font)
         current_menu = 'shadow_realm'
         cursor_position = 'shadow_realm'
 
-    #Battle phase draws
+    #Battle normal menu
     if battle.battle == True:
         battle.drawBattleBox(screen, WHITE)
         battle.drawStats(screen, roomFont, WHITE, enemy, player)
         battle.drawEnemy(screen)
         
-
         if battle.attack == True:
             battle.rollPlayerAttack(player.equip, enemy)
             battle.turn = 'shadow_realm'
@@ -603,24 +599,15 @@ while not done:
             battle.drawBattleEventText(screen, WHITE, roomFont)
 
 
-    #Battle end draw
+    #Battle end image
     if battle.battleEvent == 'end':
         battle.endBattle(screen, WHITE, font)
-
+    #Returning cursor after end battle screen
     if battle.endBattlePhase == False:
         menu.drawMenuCursorSimple(cursor_position, screen, WHITE)
     
-
-    if game_over == True:
-        pygame.draw.rect(screen, BLACK,[0,0, 700,500], 0)
-        text1 = font.render('GAME', True, WHITE)
-        text2 = font.render('OVER', True, WHITE)
-        renderText1 = screen.blit(text1, [300, 200])
-        renderText2 = screen.blit(text2, [310, 240])
-
-    if player.hp <= 0:
-        game_over = True
-
+    
+    ##Help Screen
     if startup == True:
         pygame.draw.rect(screen, BLACK, [0, 0, 700, 500], 0)
         text1 = roomFont.render('Welcome to Cave Dweller.', True, WHITE)
@@ -639,13 +626,25 @@ while not done:
         screen.blit(text6, [20, 120])
         screen.blit(text7, [20, 140])
         screen.blit(text8, [20, 160])
+    
+    ##Game Over Screen
+    if player.hp <= 0:
+        game_over = True
+    if game_over == True:
+        pygame.draw.rect(screen, BLACK,[0,0, 700,500], 0)
+        text1 = font.render('GAME', True, WHITE)
+        text2 = font.render('OVER', True, WHITE)
+        renderText1 = screen.blit(text1, [300, 200])
+        renderText2 = screen.blit(text2, [310, 240])
+    
+    
     #Make sure draws go on screen
     pygame.display.flip()
 
     #set frames per second
     clock.tick(60)
 
-    #mop up
+    #mop up variables
     rooms.interact = False
     menu_wait = False
     z_wait = False
